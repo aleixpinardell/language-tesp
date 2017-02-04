@@ -1,4 +1,4 @@
-## 0.1.1
+## 0.2.0
 * Fixed wrong default value in INTEGRATOR_ERROR_TOLERANCE snippet.
 * Added missing explanations for OUTPUT_DIRECTORY_PATH and OUTPUT_FILE_NAME snippets.
 * Added a snippet (accessible by typing "help") to print a list with all the variables and default values.

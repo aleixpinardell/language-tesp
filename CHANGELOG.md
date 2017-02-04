@@ -1,3 +1,6 @@
+## 0.2.1
+* Fixed version-naming error in the CHANGELOG.md file.
+
 ## 0.2.0
 * Fixed wrong default value in INTEGRATOR_ERROR_TOLERANCE snippet.
 * Added missing explanations for OUTPUT_DIRECTORY_PATH and OUTPUT_FILE_NAME snippets.

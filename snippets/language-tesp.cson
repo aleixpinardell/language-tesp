@@ -11,9 +11,10 @@
       %
       % Input file for TESP (Tudat Earth Satellite Propagator)
       % http://github.com/aleixpinardell/tesp/
+      % The installed language package is compatible with TESP 0.1.0 or earlier.
       % Copyright (c) 2017 TU Delft.
       %
-
+      $1
       % #INCLUDE "path to an input file whose contents will be parsed before those of this file"
 
 
@@ -103,7 +104,7 @@
       ALLOW_RESUMING_PROPAGATION_FROM_RESULTS  YES  % NO | YES
 
       SEARCH_OUTPUT_DIRECTORY_PATH  ""
-      SEARCH_OUTPUT_FILENAME_PATTERN  ".+\.orbout"
+      SEARCH_OUTPUT_FILENAME_PATTERN  ".+\\\\.orbout"
       SEARCH_IN_SUBDIRECTORIES  NO  % NO | YES
       SEARCH_IGNORE_FILE_CONTENTS  NO  % NO | YES
 

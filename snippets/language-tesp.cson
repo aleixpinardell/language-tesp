@@ -1,0 +1,367 @@
+".source.tesp":
+
+  "Include statement":
+    "prefix": "INCLUDE"
+    "body": "#INCLUDE \"$1\""
+    "description": "Include other input files to be parsed before the contents of this file. Relative or absolute paths can be used. Relative paths are defined with respect to the directory in which the file containing the include statement is located."
+
+  "Geopotential model":
+    "prefix": "GEOPOTENTIAL_MODEL"
+    "leftLabel": "enum"
+    "body": "GEOPOTENTIAL_MODEL  ${1:GGM02C}${2:  % GGM02C | GGM02S${3:\n}}"
+    "description": "The model used to describe the Earth's gravity field. Possible values: GGM02C, gravity model based on data from GRACE and other measurements; GGM02S, gravity model based exclusively on data from GRACE."
+    "descriptionMoreURL": "http://www.csr.utexas.edu/grace/gravity/ggm02/"
+
+  "Degree of the geopotential":
+    "prefix": "GEOPOTENTIAL_DEGREE"
+    "leftLabel": "int"
+    "body": "GEOPOTENTIAL_DEGREE  ${1:2}${2:  % [1, 160]${3:\n}}"
+    "description": "The degree of the spherical harmonics expansion of the geopotential."
+
+  "Order of the geopotential":
+    "prefix": "GEOPOTENTIAL_ORDER"
+    "leftLabel": "int"
+    "body": "GEOPOTENTIAL_ORDER  ${1:0}${2:  % [0, 160]${3:\n}}"
+    "description": "The order of the spherical harmonics expansion of the geopotential."
+
+  "Sun's gravity":
+    "prefix": "THIRD_BODY_ATTRACTION_SUN"
+    "leftLabel": "bool"
+    "body": "THIRD_BODY_ATTRACTION_SUN  ${1:YES}${2:  % NO | YES${3:\n}}"
+    "description": "Whether the Sun's thrid-body central gravity should be included in the acceleration model."
+
+  "Moon's gravity":
+    "prefix": "THIRD_BODY_ATTRACTION_MOON"
+    "leftLabel": "bool"
+    "body": "THIRD_BODY_ATTRACTION_MOON  ${1:YES}${2:  % NO | YES${3:\n}}"
+    "description": "Whether the Moon's thrid-body central gravity should be included in the acceleration model."
+
+  "Atmospheric model":
+    "prefix": "ATMOSPHERIC_MODEL"
+    "leftLabel": "enum"
+    "body": "ATMOSPHERIC_MODEL  ${1:NRLMSISE00}${2:  % NRLMSISE00 | EXPONENTIAL${3:\n}}"
+    "description": "Model used for the determination of atmospheric density."
+
+  "Atmospheric drag":
+    "prefix": "ATMOSPHERIC_DRAG"
+    "leftLabel": "bool"
+    "body": "ATMOSPHERIC_DRAG  ${1:YES}${2:  % NO | YES${3:\n}}"
+    "description": "Whether the drag caused by Earth's atmosphere should be included in the acceleration model."
+
+  "Solar radiation pressure":
+    "prefix": "SOLAR_RADIATION_PRESSURE"
+    "leftLabel": "bool"
+    "body": "SOLAR_RADIATION_PRESSURE  ${1:YES}${2:  % NO | YES${3:\n}}"
+    "description": "Whether the force caused by the solar flux should be included in the acceleration model."
+
+  "Ignore Earth's shadow":
+    "prefix": "IGNORE_ECLIPSES"
+    "leftLabel": "bool"
+    "body": "IGNORE_ECLIPSES  ${1:NO}${2:  % NO | YES${3:\n}}"
+    "description": "Whether the Earth's shadow should be ignored during the assessment of solar radiation pressure."
+
+  "Body mass":
+    "prefix": "BODY_MASS"
+    "leftLabel": "double"
+    "body": "BODY_MASS  ${1:100.0}${2:  % (0, INF) kg${3:\n}}"
+    "description": "The mass of the propagated body, in kilograms."
+
+  "Body cross-sectional area":
+    "prefix": "BODY_CROSS_SECTIONAL_AREA"
+    "leftLabel": "double"
+    "body": "BODY_CROSS_SECTIONAL_AREA  ${1:10.0}${2:  % (0, INF) m\^2${3:\n}}"
+    "description": "The cross-sectional area of the propagated body, in squared meters."
+
+  "Altitude dependent drag coefficient":
+    "prefix": "ALTITUDE_DEPENDENT_DRAG_COEFFICIENT"
+    "leftLabel": "bool"
+    "body": "ALTITUDE_DEPENDENT_DRAG_COEFFICIENT  ${1:NO}${2:  % NO | YES${3:\n}}"
+    "description": "Whether the drag coefficient should be determined automaically depending on the altitude of the propagated body, which is assumed to be a tumbling plate. The values range from 2 to 3. If set to YES, the value of BODY_DRAG_COEFFICIENT is ignored."
+
+  "Body drag coefficient":
+    "prefix": "BODY_DRAG_COEFFICIENT"
+    "leftLabel": "double"
+    "body": "BODY_DRAG_COEFFICIENT  ${1:2.5}${2:  % (0, INF)${3:\n}}"
+    "description": "The drag coefficient of the propagated body. Ignored if ALTITUDE_DEPENDENT_DRAG_COEFFICIENT is set to YES."
+
+  "Body radiation pressure coefficient":
+    "prefix": "BODY_RADIATION_PRESSURE_COEFFICIENT"
+    "leftLabel": "double"
+    "body": "BODY_RADIATION_PRESSURE_COEFFICIENT  ${1:1.5}${2:  % [1, 2]${3:\n}}"
+    "description": "The radiation pressure coefficient of the propagated body."
+
+  "Initial epoch":
+    "prefix": "INITIAL_EPOCH"
+    "leftLabel": "double"
+    "body": "INITIAL_EPOCH  ${1:0.0}${2:  % (-INF, INF) years since J2000${3:\n}}"
+    "description": "The initial epoch of the propagation, in years since J2000."
+
+  "Initial semi-major axis":
+    "prefix": "INITIAL_SEMIMAJOR_AXIS"
+    "leftLabel": "double"
+    "body": "INITIAL_SEMIMAJOR_AXIS  ${1:7371.0}${2:  % (6371, INF) km${3:\n}}"
+    "description": "The initial semi-major axis of the orbit, in km. Has to be used together with INITIAL_ECCENTRICITY. Cannot be used if INITIAL_PERIGEE_ALTITUDE and INITIAL_APOGEE_ALTITUDE are provided."
+
+  "Initial eccentricity":
+    "prefix": "INITIAL_ECCENTRICITY"
+    "leftLabel": "double"
+    "body": "INITIAL_ECCENTRICITY  ${1:0.0}${2:  % [0, 1)${3:\n}}"
+    "description": "The initial eccentricity of the orbit. The propagation of parabollic or hyperbolic trajectories is not supported. Has to be used together with INITIAL_SEMIMAJOR_AXIS. Cannot be used if INITIAL_PERIGEE_ALTITUDE and INITIAL_APOGEE_ALTITUDE are provided."
+
+  "Initial inclination":
+    "prefix": "INITIAL_INCLINATION"
+    "leftLabel": "double"
+    "body": "INITIAL_INCLINATION  ${1:0.0}${2:  % [0, 180] deg${3:\n}}"
+    "description": "The initial inclination of the orbit, in degrees."
+
+  "Initial argument of perigee":
+    "prefix": "INITIAL_ARGUMENT_PERIGEE"
+    "leftLabel": "double"
+    "body": "INITIAL_ARGUMENT_PERIGEE  ${1:0.0}${2:  % [0, 360) deg${3:\n}}"
+    "description": "The initial argument of perigee of the orbit, in degrees."
+
+  "Initial longitude of the ascending node":
+    "prefix": "INITIAL_LONGITUDE_ASCENDING_NODE"
+    "leftLabel": "double"
+    "body": "INITIAL_LONGITUDE_ASCENDING_NODE  ${1:0.0}${2:  % [0, 360) deg${3:\n}}"
+    "description": "The initial longitude of the ascending node of the orbit, in degrees."
+
+  "Initial true anomaly":
+    "prefix": "INITIAL_TRUE_ANOMALY"
+    "leftLabel": "double"
+    "body": "INITIAL_TRUE_ANOMALY  ${1:0.0}${2:  % [0, 360) deg${3:\n}}"
+    "description": "The initial true anomaly of the propagated body, in degrees."
+
+  "Initial perigee altitude":
+    "prefix": "INITIAL_PERIGEE_ALTITUDE"
+    "leftLabel": "double"
+    "body": "INITIAL_PERIGEE_ALTITUDE  ${1:1000.0}${2:  % (0, INF) km${3:\n}}"
+    "description": "The initial perigee altitude of the orbit, in kilometres. Has to be used together with INITIAL_APOGEE_ALTITUDE. Cannot be used if INITIAL_SEMIMAJOR_AXIS and INITIAL_ECCENTRICITY are provided."
+
+  "Initial apogee altitude":
+    "prefix": "INITIAL_APOGEE_ALTITUDE"
+    "leftLabel": "double"
+    "body": "INITIAL_APOGEE_ALTITUDE  ${1:1000.0}${2:  % (0, INF) km${3:\n}}"
+    "description": "The initial apogee altitude of the orbit, in kilometres. Has to be used together with INITIAL_PERIGEE_ALTITUDE. Cannot be used if INITIAL_SEMIMAJOR_AXIS and INITIAL_ECCENTRICITY are provided."
+
+  "Preload celestial bodies data":
+    "prefix": "PRELOAD_CELESTIAL_BODIES_DATA"
+    "leftLabel": "bool"
+    "body": "PRELOAD_CELESTIAL_BODIES_DATA  ${1:YES}${2:  % NO | YES${3:\n}}"
+    "description": "Whether to preload the ephemeris and rotational model data from Spice for the Earth, the Sun and the Moon before the propagation for the period defined by INITIAL_EPOCH and MAXIMUM_PROPAGATION_PERIOD, or to access Spice at each integration step. In general, preloading the celestial bodies data is recommended, as it can speed up the propagation significantly. However, for long propagations (several decades), this will require using large amounts of memory (several gigabytes). When the body is expected to have a high chance of re-entering significantly sooner than the value specified by MAXIMUM_PROPAGATION_PERIOD, then setting PRELOAD_CELESTIAL_BODIES_DATA to NO may be benefitial in terms of both memory useage and CPU performance."
+
+  "Maximum propagation period":
+    "prefix": "MAXIMUM_PROPAGATION_PERIOD"
+    "leftLabel": "double"
+    "body": "MAXIMUM_PROPAGATION_PERIOD  ${1:10.0}${2:  % (0, INF) years${3:\n}}"
+    "description": "The period, in years, after which the propagation will be stopped, if it has not finished yet."
+
+  "Re-entry altitude":
+    "prefix": "REENTRY_ALTITUDE"
+    "leftLabel": "double"
+    "body": "REENTRY_ALTITUDE  ${1:0.0}${2:  % [0, INF) km${3:\n}}"
+    "description": "The re-entry altitude, in kilometres. If the propagated body's altitude gets below this value, the propagation will be terminated. If the re-entry altitude is chosen too low, the propagation may actually terminate before reaching the specified limit. If the re-entry altitude is set to 0 (or not specified), the re-entry condition will not be evaluated, which will increase performance."
+
+  "Propagator name":
+    "prefix": "PROPAGATOR_NAME"
+    "leftLabel": "enum"
+    "body": "PROPAGATOR_NAME  ${1:COWELL}${2:  % COWELL | ENCKE${3:\n}}"
+    "description": "The propagator to be used. Possible values: COWELL, the state of the body is propagated directly; ENCKE, the difference between the state of the body and a reference, Keplerian orbit is propagated. The Cowell propagator is more efficient for highly-perturbed orbits, while the Encke propagator can provide better performance for slightly-perturbed orbits."
+
+  "Integrator name":
+    "prefix": "INTEGRATOR_NAME"
+    "leftLabel": "enum"
+    "body": "INTEGRATOR_NAME  ${1:RK4}${2:  % RK4 | RK45 | RK56 | RK78 | DP78${3:\n}}"
+    "description": "The integrator to be used. Possible values: RK4, fixed-stepsize integrator based on the Runge-Kutta 4 method; RK45, variable-stepsize integrator based on the Runge-Kutta-Fehlberg 4(5) method; RK56, variable-stepsize integrator based on the Runge-Kutta-Fehlberg 5(6) method; RK78, variable-stepsize integrator based on the Runge-Kutta-Fehlberg 7(8) method; DP78, variable-stepsize integrator based on the Dormand-Prince 7(8) method."
+
+  "Stepsize of the fixed-stepsize integrator":
+    "prefix": "INTEGRATOR_FIXED_STEPSIZE"
+    "leftLabel": "double"
+    "body": "INTEGRATOR_FIXED_STEPSIZE  ${1:60.0}${2:  % (0, INF) s${3:\n}}"
+    "description": "The stepsize of the integrator, in seconds. Only applicable if a fixed-stepsize integrator is being used."
+
+  "Initial stepsize of the variable-stepsize integrator":
+    "prefix": "INTEGRATOR_INITIAL_STEPSIZE"
+    "leftLabel": "double"
+    "body": "INTEGRATOR_INITIAL_STEPSIZE  ${1:60.0}${2:  % (0, INF) s${3:\n}}"
+    "description": "The initial stepsize of the integrator, in seconds. Only applicable if a variable-stepsize integrator is being used. The first step is performed with the specified stepsize, while the following stepsizes are determined so that the values of the relative or absolute errors do not exceed INTEGRATOR_ERROR_TOLERANCE."
+
+  "Error tolerance of the variable-stepsize integrator":
+    "prefix": "INTEGRATOR_ERROR_TOLERANCE"
+    "leftLabel": "double"
+    "body": "INTEGRATOR_ERROR_TOLERANCE  ${1:60.0}${2:  % (0, INF) s${3:\n}}"
+    "description": "The error tolerance of the variable-stepsize integrator. Ignored if a fixed-stepsize integrator is being used. The first step is performed with the stepsize defined by INTEGRATOR_INITIAL_STEPSIZE, while the following stepsizes are determined so that the values of the relative or absolute errors do not exceed INTEGRATOR_ERROR_TOLERANCE."
+
+  "Output directory path":
+    "prefix": "OUTPUT_DIRECTORY_PATH"
+    "leftLabel": "std::string"
+    "body": "OUTPUT_DIRECTORY_PATH  \"$1\"${2:\n}"
+    "description": ""
+
+  "Output file's name":
+    "prefix": "OUTPUT_FILE_NAME"
+    "leftLabel": "std::string"
+    "body": "OUTPUT_FILE_NAME  \"${1:$FILENAME}.${2:orbout}\"${3:\n}"
+    "description": ""
+
+  "Numeric precision":
+    "prefix": "OUTPUT_NUMERIC_PRECISION"
+    "leftLabel": "int"
+    "body": "OUTPUT_NUMERIC_PRECISION  ${1:8}${2:  % [1, INF)${3:\n}}"
+    "description": "The number of significant digits to be used when printing the results to the output file."
+
+  "Output input settings":
+    "prefix": "OUTPUT_INPUT_SETTINGS"
+    "leftLabel": "bool"
+    "body": "OUTPUT_INPUT_SETTINGS  ${1:YES}${2:  % NO | YES${3:\n}}"
+    "description": "Whether to include the settings for the propagation in the output file. These do not only include the variables explicitily specified in the input file(s) but also the variables that took the default values. Some of the variables, which are not relevant for the results of the propagation, are not included."
+
+  "Output description of the columns of the result matrix":
+    "prefix": "OUTPUT_RESULTS_COLUMNS_DESCRIPTIONS"
+    "leftLabel": "bool"
+    "body": "OUTPUT_RESULTS_COLUMNS_DESCRIPTIONS  ${1:YES}${2:  % NO | YES${3:\n}}"
+    "description": "Whether to include a description of the columns of the result matrix in the output file. This description indicates which physical property each of the columns corresponds to, and the corresponding units."
+
+  "Output computation time":
+    "prefix": "OUTPUT_COMPUTATION_TIME"
+    "leftLabel": "bool"
+    "body": "OUTPUT_COMPUTATION_TIME  ${1:YES}${2:  % NO | YES${3:\n}}"
+    "description": "Whether to include the total computation time that was required to complete the propagation, in seconds, in the output file."
+
+  "Output body Keplerian state":
+    "prefix": "OUTPUT_BODY_KEPLERIAN_STATE"
+    "leftLabel": "bool"
+    "body": "OUTPUT_BODY_KEPLERIAN_STATE  ${1:YES}${2:  % NO | YES${3:\n}}"
+    "description": "Whether to include six columns in the results matrix containing the Keplerian state of the propagated body at the requested integration steps. The columns, from left to right, correspond to these magnitudes (units): semi-major axis (m), eccentricty, inclination (rad), argument of perigee (rad), longitude of the ascending node (rad) and true anomaly (rad)."
+
+  "utput body Cartesian state":
+    "prefix": "OUTPUT_BODY_CARTESIAN_STATE"
+    "leftLabel": "bool"
+    "body": "OUTPUT_BODY_CARTESIAN_STATE  ${1:NO}${2:  % NO | YES${3:\n}}"
+    "description": "Whether to include six columns in the results matrix containing the Cartesian state of the propagated body, defined in an intertial J2000-Solar-System-barycentre-oriented, Earth-centred reference frame, at the requested integration steps. The columns, from left to right, correspond to these magnitudes (units): position X axis (m), position Y axis (m), position Z axis (m), velocity X axis (m/s), velocity Y axis (m/s), velocity Z axis (m/s)."
+
+  "Output Sun position":
+    "prefix": "OUTPUT_SUN_POSITION"
+    "leftLabel": "bool"
+    "body": "OUTPUT_SUN_POSITION  ${1:NO}${2:  % NO | YES${3:\n}}"
+    "description": "Whether to include three columns in the results matrix containing the position of the Sun, defined in an intertial J2000-Solar-System-barycentre-oriented, Earth-centred reference frame, at the requested integration steps. The columns, from left to right, correspond to these magnitudes (units): position X axis (m), position Y axis (m), position Z axis (m)."
+
+  "Output Moon position":
+    "prefix": "OUTPUT_MOON_POSITION"
+    "leftLabel": "bool"
+    "body": "OUTPUT_MOON_POSITION  ${1:NO}${2:  % NO | YES${3:\n}}"
+    "description": "Whether to include three columns in the results matrix containing the position of the Moon, defined in an intertial J2000-Solar-System-barycentre-oriented, Earth-centred reference frame, at the requested integration steps. The columns, from left to right, correspond to these magnitudes (units): position X axis (m), position Y axis (m), position Z axis (m)."
+
+  "Output frequency":
+    "prefix": "OUTPUT_ONE_IN_EVERY_INTEGRATION_STEPS"
+    "leftLabel": "int"
+    "body": "OUTPUT_ONE_IN_EVERY_INTEGRATION_STEPS  ${1:1}${2:  % [1, INF)${3:\n}}"
+    "description": "Output the requested variables only at one in every OUTPUT_ONE_IN_EVERY_INTEGRATION_STEPS steps. If set to 1, all the integration steps are outputted. This variable is ignored when OUTPUT_ONLY_LAST_INTEGRATION_STEP is set to YES."
+
+  "Output only last integration step":
+    "prefix": "OUTPUT_ONLY_LAST_INTEGRATION_STEP"
+    "leftLabel": "bool"
+    "body": "OUTPUT_ONLY_LAST_INTEGRATION_STEP  ${1:NO}${2:  % NO | YES${3:\n}}"
+    "description": "Whether the results matrix should only contain the values for the requested variables at the last integration step. If set to YES, OUTPUT_ONE_IN_EVERY_INTEGRATION_STEPS is ignored."
+
+  "Print success message":
+    "prefix": "PRINT_SUCCESS_MESSAGE_AFTER_PROPAGATION"
+    "leftLabel": "bool"
+    "body": "PRINT_SUCCESS_MESSAGE_AFTER_PROPAGATION  ${1:YES}${2:  % NO | YES${3:\n}}"
+    "description": "Whether a message should be printed to the console or terminal window when the propagation completes successfully, including the path of the original input file."
+
+  "Delete input file":
+    "prefix": "DELETE_INPUT_FILE_AFTER_PROPAGATION"
+    "leftLabel": "bool"
+    "body": "DELETE_INPUT_FILE_AFTER_PROPAGATION  ${1:NO}${2:  % NO | YES${3:\n}}"
+    "description": "Whether the original input file should be deleted after successfully completing the propagation. This does not delete other input files referenced from the original input file using #INCLUDE statements."
+
+  "Skip propagation if output exists":
+    "prefix": "SKIP_PROPAGATION_IF_OUTPUT_FILE_EXISTS"
+    "leftLabel": "bool"
+    "body": "SKIP_PROPAGATION_IF_OUTPUT_FILE_EXISTS  ${1:NO}${2:  % NO | YES${3:\n}}"
+    "description": "Whether to skip the propagation if the output file specified by OUTPUT_DIRECTORY_PATH and OUTPUT_FILE_NAME exists. Note that, when set to YES, if a propagation is completed and then the input file is changed, it will not be possible to propagate the orbit with the updated input settings unless the previously-generated output file is (re)moved manually by the user."
+
+  "Skip propagation if results found":
+    "prefix": "SKIP_PROPAGATION_IF_RESULTS_FOUND"
+    "leftLabel": "bool"
+    "body": "SKIP_PROPAGATION_IF_RESULTS_FOUND  ${1:YES}${2:  % NO | YES${3:\n}}"
+    "description": "Whether to skip the propagation if an output file containing the requested results for the current input settings is found (the output files in which the results are searched for are determined by SEARCH_OUTPUT_DIRECTORY_PATH and SEARCH_OUTPUT_FILENAME_PATTERN; only the output files generated with OUTPUT_INPUT_SETTINGS set to YES are considered, otherwise it is not possible to determine if the input settings for the candidate output file and the current input settings match)."
+
+  "Allow resuming propagation from results":
+    "prefix": "ALLOW_RESUMING_PROPAGATION_FROM_RESULTS"
+    "leftLabel": "bool"
+    "body": "ALLOW_RESUMING_PROPAGATION_FROM_RESULTS  ${1:YES}${2:  % NO | YES${3:\n}}"
+    "description": "Whether it should be allowed to propagate an orbit using the results from a previously-generated output file (the output files in which the results are searched for are determined by SEARCH_OUTPUT_DIRECTORY_PATH and SEARCH_OUTPUT_FILENAME_PATTERN; only the output files generated with OUTPUT_INPUT_SETTINGS set to YES are considered, otherwise it is not possible to determine if the input settings for the candidate output file and the current input settings match). When set to YES, if a candidate output file contains the body state for the last integration step and MAXIMUM_PROPAGATION_PERIOD is larger for the current propagation than for the previously-propagated orbit, then the propagation is resumed from that final epoch and state."
+
+  "Search for output in directory":
+    "prefix": "SEARCH_OUTPUT_DIRECTORY_PATH"
+    "leftLabel": "std::string"
+    "body": "SEARCH_OUTPUT_DIRECTORY_PATH  \"$1\"${2:\n}"
+    "description": "The (relative or absolute) path of the directory in which it will be searched for output files containing the results corresponding to the current propagation."
+
+  "Search for output in files named":
+    "prefix": "SEARCH_OUTPUT_FILENAME_PATTERN"
+    "leftLabel": "std::string"
+    "body": "SEARCH_OUTPUT_FILENAME_PATTERN  \"${1:.+}\\\\.${2:orbout}\"${3:\n}"
+    "description": "The regular expression used to determine in which files it will be searched for the results corresponding to the current propagation. Since the character '.' has a special meaning in regular expressions, when wanting to match '.' literally, e.g. to specify the file extension, it has to be escaped by typing '\\.' The default regular expression matches all files with 'orbout' extension."
+
+  "Search in subdirectories":
+    "prefix": "SEARCH_IN_SUBDIRECTORIES"
+    "leftLabel": "bool"
+    "body": "SEARCH_IN_SUBDIRECTORIES  ${1:NO}${2:  % NO | YES${3:\n}}"
+    "description": "Whether the search for matching files should be performed recursively in all the subdirectories contained in SEARCH_OUTPUT_DIRECTORY_PATH."
+
+  "Search ignore file contents":
+    "prefix": "SEARCH_IGNORE_FILE_CONTENTS"
+    "leftLabel": "bool"
+    "body": "SEARCH_IGNORE_FILE_CONTENTS  ${1:NO}${2:  % NO | YES${3:\n}}"
+    "description": "Whether the search for matching results is considered to be successful when a file matching the specified SEARCH_OUTPUT_FILENAME_PATTERN in the SEARCH_OUTPUT_DIRECTORY_PATH (and subdirectories) is found, regardless of the input settings that were used to generate that file. When set to NO, the match is only successful when all the relevant input settings of the candidate file match those of the current propagation."
+
+  "Output for skipped propagation":
+    "prefix": "OUTPUT_FOR_SKIPPED_PROPAGATION"
+    "leftLabel": "enum"
+    "body": "OUTPUT_FOR_SKIPPED_PROPAGATION  ${1:DUPLICATE}${2:  % NONE | REFERENCE | DUPLICATE${3:\n}}"
+    "description": "The contents of the file (if any) that will be generated when an orbit is skipped because an output file form a previous propagation containing the requested results for the current input settings has been found. Possible values: NONE, no output file is generated; REFERENCE, an output file containing the path to the matching file is generated; DUPLICATE, a file containing the requested results, obtained by copying them from the matching file, is generated. When the path of the output file and the matching file are the same, this variable is ignored and the matching file stays unmodified."
+
+  "Non-defined variable":
+    "prefix": "NON_DEFINED_VARIABLE"
+    "leftLabel": "enum"
+    "body": "NON_DEFINED_VARIABLE  ${1:USE_DEFAULT}${2:  % USE_DEFAULT | WARN | ERROR${3:\n}}"
+    "description": "The response to a non-defined variable event. Possible values: USE_DEFAULT, the default value is used if the variable is not defined in the input file; WARN, the same, but a message is printed to the console or terminal window; ERROR, the program terminates throwing an error message."
+
+  "Unrecognized variable name":
+    "prefix": "UNRECOGNIZED_VARIABLE_NAME"
+    "leftLabel": "enum"
+    "body": "UNRECOGNIZED_VARIABLE_NAME  ${1:WARN}${2:  % IGNORE | WARN | ERROR${3:\n}}"
+    "description": "The response to an unrecognized variable name event. Possible values: IGNORE, the variable and specified value are ignored; WARN, the same, but a message is printed to the console or terminal window; ERROR, the program terminates throwing an error message."
+
+  "Multiply-defined variable in different input files":
+    "prefix": "MULTIPLY_DEFINED_VARIABLE_DIF_FILES"
+    "leftLabel": "enum"
+    "body": "MULTIPLY_DEFINED_VARIABLE_DIF_FILES  ${1:USE_LAST}${2:  % USE_LAST | WARN | ERROR${3:\n}}"
+    "description": "The response to a multiply-defined variable in different input files event (i.e. in included files). Possible values: USE_LAST, the value of the last definition is used; WARN, the same, but a message is printed to the console or terminal window; ERROR, the program terminates throwing an error message."
+
+  "Multiply-defined variable in the same input file":
+    "prefix": "MULTIPLY_DEFINED_VARIABLE_SAME_FILE"
+    "leftLabel": "enum"
+    "body": "MULTIPLY_DEFINED_VARIABLE_SAME_FILE  ${1:WARN}${2:  % USE_LAST | WARN | ERROR${3:\n}}"
+    "description": "The response to a multiply-defined variable in the same input file event. Possible values: USE_LAST, the value of the last definition is used; WARN, the same, but a message is printed to the console or terminal window; ERROR, the program terminates throwing an error message."
+
+  "Non-valid value":
+    "prefix": "NON_VALID_VALUE"
+    "leftLabel": "enum"
+    "body": "NON_VALID_VALUE  ${1:ERROR}${2:  % USE_DEFAULT | WARN | ERROR${3:\n}}"
+    "description": "The response to a non-valid value event. Possible values: USE_DEFAULT, the default value is used if the provided value is outside the allowed range or does not match any of the possible values; WARN, the same, but a message is printed to the console or terminal window; ERROR, the program terminates throwing an error message."
+
+  "Skipping propagation":
+    "prefix": "SKIPPING_PROPAGATION"
+    "leftLabel": "enum"
+    "body": "SKIPPING_PROPAGATION  ${1:WARN}${2:  % SILENT | WARN${3:\n}}"
+    "description": "The response to a skipping propagationevent. Possible values: SILENT, no message is printed; WARN, a message is printed to the console or terminal window."
+
+  "Resuming propagation from output":
+    "prefix": "RESUMING_PROPAGATION_FROM_OUTPUT"
+    "leftLabel": "enum"
+    "body": "RESUMING_PROPAGATION_FROM_OUTPUT  ${1:WARN}${2:  % SILENT | WARN${3:\n}}"
+    "description": "The response to a resuming propagation from output event. Possible values: SILENT, no message is printed; WARN, a message is printed to the console or terminal window."

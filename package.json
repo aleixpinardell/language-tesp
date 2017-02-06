@@ -1,6 +1,6 @@
 {
   "name": "language-tesp",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "main": "./lib/main",
   "description": "Support for editing and reading TESP (Tudat Earth Satellite Propagator) input and output files in Atom.",
   "engines": {

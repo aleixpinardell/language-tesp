@@ -1,3 +1,6 @@
+### 0.2.3
+* Removed support for "orbout" files. These files should not be modified by the user and will generally be read and processed by other programs rather than manually. Moreover, even when support was provided, the TESP grammar was not loaded by Atom when the file was very large, i.e. when it contained a large results matrix.
+
 ### 0.2.2
 * Added a comment to the help-snippet indicating which version of TESP the installed language package supports.
 * Fixed some minor bugs in the help-snippet:

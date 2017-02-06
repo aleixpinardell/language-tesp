@@ -1,10 +1,5 @@
 ".source.tesp":
 
-  "Include statement":
-    "prefix": "INCLUDE"
-    "body": "#INCLUDE \"$1\""
-    "description": "Include other input files to be parsed before the contents of this file. Relative or absolute paths can be used. Relative paths are defined with respect to the directory in which the file containing the include statement is located."
-
   "All variables and default values":
     "prefix": "help"
     "body": '''
@@ -125,6 +120,11 @@
 
     '''
     "description": "Prints a list of all the variables with the default and allowed values."
+
+  "Include statement":
+    "prefix": "INCLUDE"
+    "body": "#INCLUDE \"$1\""
+    "description": "Include other input files to be parsed before the contents of this file. Relative or absolute paths can be used. Relative paths are defined with respect to the directory in which the file containing the include statement is located."
 
   "Geopotential model":
     "prefix": "GEOPOTENTIAL_MODEL"

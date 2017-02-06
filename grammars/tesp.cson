@@ -1,5 +1,5 @@
 fileTypes: [
-  "orbinp", "orbout"
+  "orbinp"
 ]
 name: "Tudat Earth Satellite Propagator"
 scopeName: "source.tesp"

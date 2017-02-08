@@ -1,130 +1,25 @@
-".source.tesp":
-
-  "All variables and default values":
-    "prefix": "help"
-    "body": '''
-      %
-      % Input file for TESP (Tudat Earth Satellite Propagator)
-      % http://github.com/aleixpinardell/tesp/
-      % The installed language package is compatible with TESP 0.1.0 or earlier.
-      % Copyright (c) 2017 TU Delft.
-      %
-      $1
-      % #INCLUDE "path to an input file whose contents will be parsed before those of this file"
-
-
-      % ACCELERATION MODEL
-
-      GEOPOTENTIAL_MODEL  GGM02C  % GGM02C | GGM02S
-      GEOPOTENTIAL_DEGREE  2  % [1, 160]
-      GEOPOTENTIAL_ORDER  0  % [0, 160]
-
-      THIRD_BODY_ATTRACTION_SUN  YES  % NO | YES
-      THIRD_BODY_ATTRACTION_MOON  YES  % NO | YES
-
-      ATMOSPHERIC_MODEL  NRLMSISE00  % NRLMSISE00 | EXPONENTIAL
-      ATMOSPHERIC_DRAG  YES  % NO | YES
-
-      SOLAR_RADIATION_PRESSURE  YES  % NO | YES
-      IGNORE_ECLIPSES  NO  % NO | YES
-
-
-      % BODY PROPERTIES
-
-      BODY_MASS  100.0  % (0, INF) kg
-      BODY_CROSS_SECTIONAL_AREA  10.0  % (0, INF) m^2
-
-      ALTITUDE_DEPENDENT_DRAG_COEFFICIENT  NO  % NO | YES
-      BODY_DRAG_COEFFICIENT  2.5  % (0, INF)
-      BODY_RADIATION_PRESSURE_COEFFICIENT  1.5  % [1, 2]
-
-
-      % INITIAL STATE
-
-      INITIAL_EPOCH  0.0  % (-INF, INF) years since J2000
-
-      INITIAL_SEMIMAJOR_AXIS  7371.0  % (6371, INF) km
-      INITIAL_ECCENTRICITY  0.0  % [0, 1)
-      INITIAL_INCLINATION  0.0  % [0, 180] deg
-      INITIAL_ARGUMENT_PERIGEE  0.0  % [0, 360) deg
-      INITIAL_LONGITUDE_ASCENDING_NODE  0.0  % [0, 360) deg
-      INITIAL_TRUE_ANOMALY  0.0  % [0, 360) deg
-
-      % INITIAL_PERIGEE_ALTITUDE  1000.0  % (0, INF) km
-      % INITIAL_APOGEE_ALTITUDE  1000.0  % (0, INF) km
-
-
-      % PROPAGATION SETTINGS
-
-      PRELOAD_CELESTIAL_BODIES_DATA  YES  % NO | YES
-      MAXIMUM_PROPAGATION_PERIOD  10.0  % (0, INF) years
-      REENTRY_ALTITUDE  0.0  % [0, INF) km
-
-      PROPAGATOR_NAME  COWELL  % COWELL | ENCKE
-
-      INTEGRATOR_NAME  RK4  % RK4 | RK45 | RK56 | RK78 | DP78
-      INTEGRATOR_FIXED_STEPSIZE  60.0  % (0, INF) s
-      % INTEGRATOR_INITIAL_STEPSIZE  60.0  % (0, INF) s
-      % INTEGRATOR_ERROR_TOLERANCE  1.0E-12  % (0, INF)
-
-
-      % OUTPUT SETTINGS
-
-      OUTPUT_DIRECTORY_PATH  ""
-      OUTPUT_FILE_NAME  "$FILENAME.orbout"
-
-      OUTPUT_NUMERIC_PRECISION  8  % [1, INF)
-
-      OUTPUT_INPUT_SETTINGS  YES  % NO | YES
-      OUTPUT_RESULTS_COLUMNS_DESCRIPTIONS  YES  % NO | YES
-      OUTPUT_COMPUTATION_TIME  YES  % NO | YES
-
-      OUTPUT_BODY_KEPLERIAN_STATE  YES  % NO | YES
-      OUTPUT_BODY_CARTESIAN_STATE  NO  % NO | YES
-      OUTPUT_SUN_POSITION  NO  % NO | YES
-      OUTPUT_MOON_POSITION  NO  % NO | YES
-
-      OUTPUT_ONE_IN_EVERY_INTEGRATION_STEPS  1  % [1, INF)
-      OUTPUT_ONLY_LAST_INTEGRATION_STEP  NO  % NO | YES
-
-      PRINT_SUCCESS_MESSAGE_AFTER_PROPAGATION  YES  % NO | YES
-      DELETE_INPUT_FILE_AFTER_PROPAGATION  NO  % NO | YES
-
-
-      % PREVIOUS OUTPUT FILES
-
-      SKIP_PROPAGATION_IF_OUTPUT_FILE_EXISTS  NO  % NO | YES
-
-      SKIP_PROPAGATION_IF_RESULTS_FOUND  YES  % NO | YES
-      ALLOW_RESUMING_PROPAGATION_FROM_RESULTS  YES  % NO | YES
-
-      SEARCH_OUTPUT_DIRECTORY_PATH  ""
-      SEARCH_OUTPUT_FILENAME_PATTERN  ".+\\\\.orbout"
-      SEARCH_IN_SUBDIRECTORIES  NO  % NO | YES
-      SEARCH_IGNORE_FILE_CONTENTS  NO  % NO | YES
-
-      OUTPUT_FOR_SKIPPED_PROPAGATION  DUPLICATE  % NONE | REFERENCE | DUPLICATE
-
-
-      % WARNINGS AND ERRORS
-
-      NON_DEFINED_VARIABLE  USE_DEFAULT  % USE_DEFAULT | WARN | ERROR
-      UNRECOGNIZED_VARIABLE_NAME  WARN  % IGNORE | WARN | ERROR
-      NON_VALID_VALUE  ERROR  % USE_DEFAULT | WARN | ERROR
-
-      MULTIPLY_DEFINED_VARIABLE_DIF_FILES  USE_LAST  % USE_LAST | WARN | ERROR
-      MULTIPLY_DEFINED_VARIABLE_SAME_FILE  WARN  % USE_LAST | WARN | ERROR
-
-      SKIPPING_PROPAGATION  WARN  % SILENT | WARN
-      RESUMING_PROPAGATION_FROM_OUTPUT  WARN  % SILENT | WARN
-
-    '''
-    "description": "Prints a list of all the variables with the default and allowed values."
+# tespin snippets
+".source.tespin":
 
   "Include statement":
     "prefix": "INCLUDE"
     "body": "#INCLUDE \"$1\""
     "description": "Include other input files to be parsed before the contents of this file. Relative or absolute paths can be used. Relative paths are defined with respect to the directory in which the file containing the include statement is located."
+
+
+# tespvar snippets
+".source.tespvar":
+
+  "Maximum concurrent propagations":
+    "prefix": "MAXIMUM_CONCURRENT_PROPAGATIONS"
+    "leftLabel": "int"
+    "body": "GEOPOTENTIAL_DEGREE  ${1:0}${2:  % [0, INF)${3:\n}}"
+    "description": "The maximum number of propagations that can be run concurrently when using GNU Parallel. Specify a value of 0 to run concurrently as many propagations as CPUs are available."
+    "descriptionMoreURL": "https://www.gnu.org/software/parallel/"
+
+
+# Shared tespin+tespvar snippets
+".source.tespin, .source.tespvar":
 
   "Geopotential model":
     "prefix": "GEOPOTENTIAL_MODEL"
@@ -486,3 +381,125 @@
     "leftLabel": "enum"
     "body": "RESUMING_PROPAGATION_FROM_OUTPUT  ${1:WARN}${2:  % SILENT | WARN${3:\n}}"
     "description": "The response to a resuming propagation from output event. Possible values: SILENT, no message is printed; WARN, a message is printed to the console or terminal window."
+
+  "All variables and default values":
+    "prefix": "help"
+    "body": '''
+      %
+      % Input file for TESP (Tudat Earth Satellite Propagator)
+      % http://github.com/aleixpinardell/tesp/
+      % The installed language package is compatible with TESP 0.1.0 or earlier.
+      % Copyright (c) 2017 TU Delft.
+      %
+      $1
+      % #INCLUDE "path to an input file to be parsed before this one"
+      % Include-statements are not supported in "tespvar" files.
+
+
+      % ACCELERATION MODEL
+
+      GEOPOTENTIAL_MODEL  GGM02C  % GGM02C | GGM02S
+      GEOPOTENTIAL_DEGREE  2  % [1, 160]
+      GEOPOTENTIAL_ORDER  0  % [0, 160]
+
+      THIRD_BODY_ATTRACTION_SUN  YES  % NO | YES
+      THIRD_BODY_ATTRACTION_MOON  YES  % NO | YES
+
+      ATMOSPHERIC_MODEL  NRLMSISE00  % NRLMSISE00 | EXPONENTIAL
+      ATMOSPHERIC_DRAG  YES  % NO | YES
+
+      SOLAR_RADIATION_PRESSURE  YES  % NO | YES
+      IGNORE_ECLIPSES  NO  % NO | YES
+
+
+      % BODY PROPERTIES
+
+      BODY_MASS  100.0  % (0, INF) kg
+      BODY_CROSS_SECTIONAL_AREA  10.0  % (0, INF) m^2
+
+      ALTITUDE_DEPENDENT_DRAG_COEFFICIENT  NO  % NO | YES
+      BODY_DRAG_COEFFICIENT  2.5  % (0, INF)
+      BODY_RADIATION_PRESSURE_COEFFICIENT  1.5  % [1, 2]
+
+
+      % INITIAL STATE
+
+      INITIAL_EPOCH  0.0  % (-INF, INF) years since J2000
+
+      INITIAL_SEMIMAJOR_AXIS  7371.0  % (6371, INF) km
+      INITIAL_ECCENTRICITY  0.0  % [0, 1)
+      INITIAL_INCLINATION  0.0  % [0, 180] deg
+      INITIAL_ARGUMENT_PERIGEE  0.0  % [0, 360) deg
+      INITIAL_LONGITUDE_ASCENDING_NODE  0.0  % [0, 360) deg
+      INITIAL_TRUE_ANOMALY  0.0  % [0, 360) deg
+
+      % INITIAL_PERIGEE_ALTITUDE  1000.0  % (0, INF) km
+      % INITIAL_APOGEE_ALTITUDE  1000.0  % (0, INF) km
+
+
+      % PROPAGATION SETTINGS
+
+      PRELOAD_CELESTIAL_BODIES_DATA  YES  % NO | YES
+      MAXIMUM_PROPAGATION_PERIOD  10.0  % (0, INF) years
+      REENTRY_ALTITUDE  0.0  % [0, INF) km
+
+      PROPAGATOR_NAME  COWELL  % COWELL | ENCKE
+
+      INTEGRATOR_NAME  RK4  % RK4 | RK45 | RK56 | RK78 | DP78
+      INTEGRATOR_FIXED_STEPSIZE  60.0  % (0, INF) s
+      % INTEGRATOR_INITIAL_STEPSIZE  60.0  % (0, INF) s
+      % INTEGRATOR_ERROR_TOLERANCE  1.0E-12  % (0, INF)
+
+
+      % OUTPUT SETTINGS
+
+      OUTPUT_DIRECTORY_PATH  ""
+      OUTPUT_FILE_NAME  "$FILENAME.orbout"
+
+      OUTPUT_NUMERIC_PRECISION  8  % [1, INF)
+
+      OUTPUT_INPUT_SETTINGS  YES  % NO | YES
+      OUTPUT_RESULTS_COLUMNS_DESCRIPTIONS  YES  % NO | YES
+      OUTPUT_COMPUTATION_TIME  YES  % NO | YES
+
+      OUTPUT_BODY_KEPLERIAN_STATE  YES  % NO | YES
+      OUTPUT_BODY_CARTESIAN_STATE  NO  % NO | YES
+      OUTPUT_SUN_POSITION  NO  % NO | YES
+      OUTPUT_MOON_POSITION  NO  % NO | YES
+
+      OUTPUT_ONE_IN_EVERY_INTEGRATION_STEPS  1  % [1, INF)
+      OUTPUT_ONLY_LAST_INTEGRATION_STEP  NO  % NO | YES
+
+      PRINT_SUCCESS_MESSAGE_AFTER_PROPAGATION  YES  % NO | YES
+      DELETE_INPUT_FILE_AFTER_PROPAGATION  NO  % NO | YES
+
+
+      % PREVIOUS OUTPUT FILES
+
+      SKIP_PROPAGATION_IF_OUTPUT_FILE_EXISTS  NO  % NO | YES
+
+      SKIP_PROPAGATION_IF_RESULTS_FOUND  YES  % NO | YES
+      ALLOW_RESUMING_PROPAGATION_FROM_RESULTS  YES  % NO | YES
+
+      SEARCH_OUTPUT_DIRECTORY_PATH  ""
+      SEARCH_OUTPUT_FILENAME_PATTERN  ".+\\\\.orbout"
+      SEARCH_IN_SUBDIRECTORIES  NO  % NO | YES
+      SEARCH_IGNORE_FILE_CONTENTS  NO  % NO | YES
+
+      OUTPUT_FOR_SKIPPED_PROPAGATION  DUPLICATE  % NONE | REFERENCE | DUPLICATE
+
+
+      % WARNINGS AND ERRORS
+
+      NON_DEFINED_VARIABLE  USE_DEFAULT  % USE_DEFAULT | WARN | ERROR
+      UNRECOGNIZED_VARIABLE_NAME  WARN  % IGNORE | WARN | ERROR
+      NON_VALID_VALUE  ERROR  % USE_DEFAULT | WARN | ERROR
+
+      MULTIPLY_DEFINED_VARIABLE_DIF_FILES  USE_LAST  % USE_LAST | WARN | ERROR
+      MULTIPLY_DEFINED_VARIABLE_SAME_FILE  WARN  % USE_LAST | WARN | ERROR
+
+      SKIPPING_PROPAGATION  WARN  % SILENT | WARN
+      RESUMING_PROPAGATION_FROM_OUTPUT  WARN  % SILENT | WARN
+
+    '''
+    "description": "Prints a list of all the variables with the default and allowed values."

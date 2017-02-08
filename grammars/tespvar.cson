@@ -1,0 +1,43 @@
+fileTypes: [
+  "tespvar"
+]
+name: "TESP"
+scopeName: "source.tespvar"
+patterns: [
+  {
+    include: 'source.tespin#recognized_variables'
+  }
+  {
+    include: '#user_defined_variables'
+  }
+  {
+    include: 'source.tespin#comments'
+  }
+  {
+    include: '#invalid_include_statements'
+  }
+]
+
+repository:
+  user_defined_variables:
+    patterns: [
+      {
+        match: "(\\$.+?)\\b"
+        captures:
+          "1":
+            name: "entity.name.function.tesp"
+        name: "meta.entity.name.function.tesp"
+      }
+    ]
+
+  invalid_include_statements:
+    patterns: [
+      {
+        comment: "Include statements are not supported in \"tespvar\" files."
+        match: "^\\s*(\#INCLUDE\\s+\".*?\")"
+        captures:
+          "1":
+            name: "invalid.illegal.tesp"
+        name: "meta.invalid.illegal.tesp"
+      }
+    ]

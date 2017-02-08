@@ -1,0 +1,226 @@
+fileTypes: [
+  "tespin"
+]
+name: "TESP"
+scopeName: "source.tespin"
+patterns: [
+  {
+    include: "#include_statements"
+  }
+  {
+    include: "#recognized_variables"
+  }
+  {
+    include: "#comments"
+  }
+]
+repository:
+  include_statements:
+    patterns: [
+      {
+        match: "^\\s*(\#INCLUDE)\\s+(\".*?\")"
+        captures:
+          "1":
+            name: "keyword.other.tesp"
+          "2":
+            name: "string.quoted.tesp"
+        name: "meta.keyword.other.tesp"
+      }
+    ]
+  recognized_variables:
+    patterns: [
+      {
+        include: "#integers"
+      }
+      {
+        include: "#doubles"
+      }
+      {
+        include: "#booleans"
+      }
+      {
+        include: "#strings"
+      }
+      {
+        include: "#enumerations"
+      }
+    ]
+  comments:
+    patterns: [
+      {
+        begin: "%"
+        beginCaptures:
+          "0":
+            name: "punctuation.definition.comment.tesp"
+        end: "\\n"
+        name: "comment.line.percentage.tesp"
+      }
+    ]
+  integers:
+    patterns: [
+      {
+        match: "^\\s*(GEOPOTENTIAL_DEGREE|GEOPOTENTIAL_ORDER|OUTPUT_NUMERIC_PRECISION|OUTPUT_ONE_IN_EVERY_INTEGRATION_STEPS)\\s+(([\\+\\-]?[0-9]+([eE]?[\\+\\-]?[0-9]+)?))\\s+"
+        captures:
+          "1":
+            name: "variable.language.tesp"
+          "2":
+            name: "constant.numeric.integer.tesp"
+        name: "meta.constant.numeric.integer.tesp"
+      }
+    ]
+  doubles:
+    patterns: [
+      {
+        match: "^\\s*(BODY_MASS|BODY_CROSS_SECTIONAL_AREA|BODY_DRAG_COEFFICIENT|BODY_RADIATION_PRESSURE_COEFFICIENT|INITIAL_EPOCH|INITIAL_SEMIMAJOR_AXIS|INITIAL_ECCENTRICITY|INITIAL_INCLINATION|INITIAL_ARGUMENT_PERIGEE|INITIAL_LONGITUDE_ASCENDING_NODE|INITIAL_TRUE_ANOMALY|INITIAL_PERIGEE_ALTITUDE|INITIAL_APOGEE_ALTITUDE|MAXIMUM_PROPAGATION_PERIOD|REENTRY_ALTITUDE|INTEGRATOR_FIXED_STEPSIZE|INTEGRATOR_INITIAL_STEPSIZE|INTEGRATOR_ERROR_TOLERANCE)\\s+([[0-9]\\.\\+\\-eE]+)\\s+"
+        captures:
+          "1":
+            name: "variable.language.tesp"
+          "2":
+            name: "constant.numeric.double.tesp"
+        name: "meta.constant.numeric.double.tesp"
+      }
+    ]
+  booleans:
+    patterns: [
+      {
+        match: "^\\s*(THIRD_BODY_ATTRACTION_SUN|THIRD_BODY_ATTRACTION_MOON|ATMOSPHERIC_DRAG|SOLAR_RADIATION_PRESSURE|IGNORE_ECLIPSES|ALTITUDE_DEPENDENT_DRAG_COEFFICIENT|PRELOAD_CELESTIAL_BODIES_DATA|OUTPUT_INPUT_SETTINGS|OUTPUT_RESULTS_COLUMNS_DESCRIPTIONS|OUTPUT_COMPUTATION_TIME|OUTPUT_BODY_KEPLERIAN_STATE|OUTPUT_BODY_CARTESIAN_STATE|OUTPUT_SUN_POSITION|OUTPUT_MOON_POSITION|OUTPUT_ONLY_LAST_INTEGRATION_STEP|PRINT_SUCCESS_MESSAGE_AFTER_PROPAGATION|DELETE_INPUT_FILE_AFTER_PROPAGATION|SKIP_PROPAGATION_IF_OUTPUT_FILE_EXISTS|SKIP_PROPAGATION_IF_RESULTS_FOUND|ALLOW_RESUMING_PROPAGATION_FROM_RESULTS|SEARCH_IN_SUBDIRECTORIES|SEARCH_IGNORE_FILE_CONTENTS)\\s+(NO|YES)\\s+"
+        captures:
+          "1":
+            name: "variable.language.tesp"
+          "2":
+            name: "constant.language.boolean.tesp"
+        name: "meta.constant.language.boolean.tesp"
+      }
+    ]
+  strings:
+    patterns: [
+      {
+        match: "^\\s*(OUTPUT_DIRECTORY_PATH|OUTPUT_FILE_NAME|SEARCH_OUTPUT_DIRECTORY_PATH|SEARCH_OUTPUT_FILENAME_PATTERN)\\s+(\".*?\")\\s+"
+        captures:
+          "1":
+            name: "variable.language.tesp"
+          "2":
+            name: "string.quoted.tesp"
+        name: "meta.string.quoted.tesp"
+      }
+    ]
+  enumerations:
+    patterns: [
+      {
+        include: "#GEOPOTENTIAL_MODEL"
+      }
+      {
+        include: "#ATMOSPHERIC_MODEL"
+      }
+      {
+        include: "#PROPAGATOR_NAME"
+      }
+      {
+        include: "#INTEGRATOR_NAME"
+      }
+      {
+        include: "#OUTPUT_FOR_SKIPPED_PROPAGATION"
+      }
+      {
+        include: "#warnings_errors"
+      }
+    ]
+  GEOPOTENTIAL_MODEL:
+    patterns: [
+      {
+        match: "^\\s*(GEOPOTENTIAL_MODEL)\\s+(GGM02C|GGM02S)\\s+"
+        captures:
+          "1":
+            name: "variable.language.tesp"
+          "2":
+            name: "constant.language.enum.tesp"
+        name: "meta.constant.language.enum.tesp"
+      }
+    ]
+  ATMOSPHERIC_MODEL:
+    patterns: [
+      {
+        match: "^\\s*(ATMOSPHERIC_MODEL)\\s+(NRLMSISE00|EXPONENTIAL)\\s+"
+        captures:
+          "1":
+            name: "variable.language.tesp"
+          "2":
+            name: "constant.language.enum.tesp"
+        name: "meta.constant.language.enum.tesp"
+      }
+    ]
+  PROPAGATOR_NAME:
+    patterns: [
+      {
+        match: "^\\s*(PROPAGATOR_NAME)\\s+(COWELL|ENCKE)\\s+"
+        captures:
+          "1":
+            name: "variable.language.tesp"
+          "2":
+            name: "constant.language.enum.tesp"
+        name: "meta.constant.language.enum.tesp"
+      }
+    ]
+  INTEGRATOR_NAME:
+    patterns: [
+      {
+        match: "^\\s*(INTEGRATOR_NAME)\\s+(RK4|RK45|RK56|RK78|DP78)\\s+"
+        captures:
+          "1":
+            name: "variable.language.tesp"
+          "2":
+            name: "constant.language.enum.tesp"
+        name: "meta.constant.language.enum.tesp"
+      }
+    ]
+  OUTPUT_FOR_SKIPPED_PROPAGATION:
+    patterns: [
+      {
+        match: "^\\s*(OUTPUT_FOR_SKIPPED_PROPAGATION)\\s+(NONE|REFERENCE|DUPLICATE)\\s+"
+        captures:
+          "1":
+            name: "variable.language.tesp"
+          "2":
+            name: "constant.language.enum.tesp"
+        name: "meta.constant.language.enum.tesp"
+      }
+    ]
+  warnings_errors:
+    patterns: [
+      { # USE_DEFAULT | WARN | ERROR
+        match: "^\\s*(NON_DEFINED_VARIABLE|NON_VALID_VALUE)\\s+(USE_DEFAULT|WARN|ERROR)\\s+"
+        captures:
+          "1":
+            name: "variable.language.tesp"
+          "2":
+            name: "constant.language.enum.tesp"
+        name: "meta.constant.language.enum.tesp"
+      }
+      { # IGNORE | WARN | ERROR
+        match: "^\\s*(UNRECOGNIZED_VARIABLE_NAME)\\s+(IGNORE|WARN|ERROR)\\s+"
+        captures:
+          "1":
+            name: "variable.language.tesp"
+          "2":
+            name: "constant.language.enum.tesp"
+        name: "meta.constant.language.enum.tesp"
+      }
+      { # USE_LAST | WARN | ERROR
+        match: "^\\s*(MULTIPLY_DEFINED_VARIABLE_DIF_FILES|MULTIPLY_DEFINED_VARIABLE_SAME_FILE)\\s+(USE_LAST|WARN|ERROR)\\s+"
+        captures:
+          "1":
+            name: "variable.language.tesp"
+          "2":
+            name: "constant.language.enum.tesp"
+        name: "meta.constant.language.enum.tesp"
+      }
+      { # SILENT | WARN
+        match: "^\\s*(SKIPPING_PROPAGATION|RESUMING_PROPAGATION_FROM_OUTPUT)\\s+(SILENT|WARN)\\s+"
+        captures:
+          "1":
+            name: "variable.language.tesp"
+          "2":
+            name: "constant.language.enum.tesp"
+        name: "meta.constant.language.enum.tesp"
+      }
+    ]

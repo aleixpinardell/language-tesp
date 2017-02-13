@@ -11,10 +11,10 @@ Installation:
 
 3. Search for 'language-tesp' and install the package.
 
-You are ready to go. If you want to learn more, keap reading:
+You are ready to go. If you want to learn more, keep reading:
 
 4. Create a new file and save it with `tespin` extension.
 
-5. Start typing `list` and press the tab or return key to get a list of all the parameters recognized by TESP, together with their default value and the (range of) valid values.
+5. Go to Packages > Snippets > Available to see a list with all the snippets supported by the current version of the language package.
 
-6. You can always
+6. Set Atom as the application used to open `tespin`, `tespvar` and `tespout` files by default.

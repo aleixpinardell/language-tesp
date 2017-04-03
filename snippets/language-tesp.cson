@@ -1,24 +1,4 @@
-# tespin snippets
-".source.tespin":
-
-  "Include statement":
-    "prefix": "INCLUDE"
-    "body": "#INCLUDE \"$1\""
-    "description": "Include other input files to be parsed before the contents of this file. Relative or absolute paths can be used. Relative paths are defined with respect to the directory in which the file containing the include statement is located."
-
-
-# tespvar snippets
-".source.tespvar":
-
-  "Maximum concurrent propagations":
-    "prefix": "MAXIMUM_CONCURRENT_PROPAGATIONS"
-    "leftLabel": "int"
-    "body": "GEOPOTENTIAL_DEGREE  ${1:0}${2:  % [0, INF)${3:\n}}"
-    "description": "The maximum number of propagations that can be run concurrently when using GNU Parallel. Specify a value of 0 to run concurrently as many propagations as CPUs are available."
-    "descriptionMoreURL": "https://www.gnu.org/software/parallel/"
-
-
-# Shared tespin+tespvar snippets
+# Common tespin+tespvar variables
 ".source.tespin, .source.tespvar":
 
   "Geopotential model":
@@ -109,8 +89,8 @@
   "Initial epoch":
     "prefix": "INITIAL_EPOCH"
     "leftLabel": "double"
-    "body": "INITIAL_EPOCH  ${1:0.0}${2:  % (-INF, INF) years since J2000${3:\n}}"
-    "description": "The initial epoch of the propagation, in years since J2000."
+    "body": "INITIAL_EPOCH  ${1:0.0}${2:  % (-INF, INF) seconds since J2000, or formatted date: 'YYYY-MM-DD hh:mm:ss'${3:\n}}"
+    "description": "The initial epoch of the propagation, in seconds since J2000 or using the date formatt 'YYYY-MM-DD hh:mm:ss'. MM and DD can have one or two digits. hh ranges from 0 to 23. ss can be provided with decimal figures. The time-part can be partially or totally ommited. When doing so, it is assumed to be 00:00:00."
 
   "Initial semi-major axis":
     "prefix": "INITIAL_SEMIMAJOR_AXIS"
@@ -133,19 +113,19 @@
   "Initial argument of perigee":
     "prefix": "INITIAL_ARGUMENT_PERIGEE"
     "leftLabel": "double"
-    "body": "INITIAL_ARGUMENT_PERIGEE  ${1:0.0}${2:  % [0, 360) deg${3:\n}}"
+    "body": "INITIAL_ARGUMENT_PERIGEE  ${1:0.0}${2:  % [0, 360] deg${3:\n}}"
     "description": "The initial argument of perigee of the orbit, in degrees."
 
   "Initial longitude of the ascending node":
     "prefix": "INITIAL_LONGITUDE_ASCENDING_NODE"
     "leftLabel": "double"
-    "body": "INITIAL_LONGITUDE_ASCENDING_NODE  ${1:0.0}${2:  % [0, 360) deg${3:\n}}"
+    "body": "INITIAL_LONGITUDE_ASCENDING_NODE  ${1:0.0}${2:  % [0, 360] deg${3:\n}}"
     "description": "The initial longitude of the ascending node of the orbit, in degrees."
 
   "Initial true anomaly":
     "prefix": "INITIAL_TRUE_ANOMALY"
     "leftLabel": "double"
-    "body": "INITIAL_TRUE_ANOMALY  ${1:0.0}${2:  % [0, 360) deg${3:\n}}"
+    "body": "INITIAL_TRUE_ANOMALY  ${1:0.0}${2:  % [0, 360] deg${3:\n}}"
     "description": "The initial true anomaly of the propagated body, in degrees."
 
   "Initial perigee altitude":
@@ -164,19 +144,25 @@
     "prefix": "PRELOAD_CELESTIAL_BODIES_DATA"
     "leftLabel": "bool"
     "body": "PRELOAD_CELESTIAL_BODIES_DATA  ${1:YES}${2:  % NO | YES${3:\n}}"
-    "description": "Whether to preload the ephemeris and rotational model data from Spice for the Earth, the Sun and the Moon before the propagation for the period defined by INITIAL_EPOCH and MAXIMUM_PROPAGATION_PERIOD, or to access Spice at each integration step. In general, preloading the celestial bodies data is recommended, as it can speed up the propagation significantly. However, for long propagations (several decades), this will require using large amounts of memory (several gigabytes). When the body is expected to have a high chance of re-entering significantly sooner than the value specified by MAXIMUM_PROPAGATION_PERIOD, then setting PRELOAD_CELESTIAL_BODIES_DATA to NO may be benefitial in terms of both memory useage and CPU performance."
+    "description": "Whether to preload the ephemeris and rotational model data from Spice for the Earth, the Sun and the Moon before the propagation for the period defined by INITIAL_EPOCH and END_EPOCH or PROPAGATION_PERIOD, or to access Spice at each integration step. In general, preloading the celestial bodies data is recommended, as it can speed up the propagation significantly. However, for long propagations (several decades), this will require using large amounts of memory (several gigabytes). When the body is expected to have a high chance of re-entering at an epoch significantly sooner than the one determined by END_EPOCH or by INITIAL_EPOCH + PROPAGATION_PERIOD, then setting PRELOAD_CELESTIAL_BODIES_DATA to NO may be benefitial in terms of both memory useage and CPU performance."
+
+  "End epoch":
+    "prefix": "END_EPOCH"
+    "leftLabel": "double"
+    "body": "END_EPOCH  ${1:2015/12/31}${2:  % (-INF, INF) seconds since J2000, or formatted date: 'YYYY-MM-DD hh:mm:ss'${3:\n}}"
+    "description": "The epoch at which the propagation will be stopped, if it has not finished yet. As for INITIAL_EPOCH, the value can be provided in seconds since J2000 or using the date format 'YYYY-MM-DD hh:mm:ss'. MM and DD can have one or two digits. hh ranges from 0 to 23. ss can be provided with decimal figures. The time-part can be partially or totally ommited. When doing so, it is assumed to be 00:00:00. The most restrictive of END_EPOCH, PROPAGATION_PERIOD and REENTRY_ALTITUDE will determine the actual duration of the propagation."
 
   "Maximum propagation period":
-    "prefix": "MAXIMUM_PROPAGATION_PERIOD"
+    "prefix": "PROPAGATION_PERIOD"
     "leftLabel": "double"
-    "body": "MAXIMUM_PROPAGATION_PERIOD  ${1:10.0}${2:  % (0, INF) years${3:\n}}"
-    "description": "The period, in years, after which the propagation will be stopped, if it has not finished yet."
+    "body": "PROPAGATION_PERIOD  ${1:10.0}${2:  % (0, INF) sidereal years${3:\n}}"
+    "description": "The period, in sidereal years, after which the propagation will be stopped, if it has not finished yet. The most restrictive of END_EPOCH, PROPAGATION_PERIOD and REENTRY_ALTITUDE will determine the actual duration of the propagation."
 
   "Re-entry altitude":
     "prefix": "REENTRY_ALTITUDE"
     "leftLabel": "double"
     "body": "REENTRY_ALTITUDE  ${1:0.0}${2:  % [0, INF) km${3:\n}}"
-    "description": "The re-entry altitude, in kilometres. If the propagated body's altitude gets below this value, the propagation will be terminated. If the re-entry altitude is chosen too low, the propagation may actually terminate before reaching the specified limit. If the re-entry altitude is set to 0 (or not specified), the re-entry condition will not be evaluated, which will increase performance."
+    "description": "The re-entry altitude, in kilometres. If the propagated body's altitude gets below this value, the propagation will be terminated. If the re-entry altitude is chosen too low, the propagation may actually terminate before reaching the specified limit. If the re-entry altitude is set to 0 (or not specified), the re-entry condition will not be evaluated, which will increase performance. The most restrictive of END_EPOCH, PROPAGATION_PERIOD and REENTRY_ALTITUDE will determine the actual duration of the propagation."
 
   "Propagator name":
     "prefix": "PROPAGATOR_NAME"
@@ -211,14 +197,14 @@
   "Output directory path":
     "prefix": "OUTPUT_DIRECTORY_PATH"
     "leftLabel": "std::string"
-    "body": "OUTPUT_DIRECTORY_PATH  \"$1\"${2:\n}"
+    "body": "OUTPUT_DIRECTORY_PATH  '$1'${2:\n}"
     "description": "Path to the directory where the output file will be generated. Relative or absolute paths can be used. Relative paths are defined with respect to the directory in which the file containing this statement is located."
 
   "Output file's name":
     "prefix": "OUTPUT_FILE_NAME"
     "leftLabel": "std::string"
-    "body": "OUTPUT_FILE_NAME  \"${1:$FILENAME}.${2:orbout}\"${3:\n}"
-    "description": "The filename (stem and extension) of the output file. $FILENAME is replaced by the original input file's stem (i.e. the filename without the extension) during runtime."
+    "body": "OUTPUT_FILE_NAME  '${1:$FILENAME}'${2:\n}"
+    "description": "The filename of the output file. It is not necessary to indicate the \"tespout\" extension. $FILENAME will be replaced by the original input file's name during runtime."
 
   "Numeric precision":
     "prefix": "OUTPUT_NUMERIC_PRECISION"
@@ -243,6 +229,12 @@
     "leftLabel": "bool"
     "body": "OUTPUT_COMPUTATION_TIME  ${1:YES}${2:  % NO | YES${3:\n}}"
     "description": "Whether to include the total computation time that was required to complete the propagation, in seconds, in the output file."
+
+  "Output propagation termination cause":
+    "prefix": "OUTPUT_PROPAGATION_TERMINATION_CAUSE"
+    "leftLabel": "bool"
+    "body": "OUTPUT_PROPAGATION_TERMINATION_CAUSE  ${1:YES}${2:  % NO | YES${3:\n}}"
+    "description": "Whether to include the cause of termination of the propagation in the output file. The possible outputted values are END_EPOCH_REACHED, MAXIMUM_PROPAGATION_PERIOD_REACHED, REENTRY_ALTITUDE_REACHED, PROPAGATION_ERROR_THROWN and UNKNOWN."
 
   "Output body Keplerian state":
     "prefix": "OUTPUT_BODY_KEPLERIAN_STATE"
@@ -308,19 +300,19 @@
     "prefix": "ALLOW_RESUMING_PROPAGATION_FROM_RESULTS"
     "leftLabel": "bool"
     "body": "ALLOW_RESUMING_PROPAGATION_FROM_RESULTS  ${1:YES}${2:  % NO | YES${3:\n}}"
-    "description": "Whether it should be allowed to propagate an orbit using the results from a previously-generated output file (the output files in which the results are searched for are determined by SEARCH_OUTPUT_DIRECTORY_PATH and SEARCH_OUTPUT_FILENAME_PATTERN; only the output files generated with OUTPUT_INPUT_SETTINGS set to YES are considered, otherwise it is not possible to determine if the input settings for the candidate output file and the current input settings match). When set to YES, if a candidate output file contains the body state for the last integration step and MAXIMUM_PROPAGATION_PERIOD is larger for the current propagation than for the previously-propagated orbit, then the propagation is resumed from that final epoch and state."
+    "description": "Whether it should be allowed to propagate an orbit using the results from a previously-generated output file (the output files in which the results are searched for are determined by SEARCH_OUTPUT_DIRECTORY_PATH and SEARCH_OUTPUT_FILENAME_PATTERN; only the output files generated with OUTPUT_INPUT_SETTINGS set to YES are considered, otherwise it is not possible to determine if the input settings for the candidate output file and the current input settings match). When set to YES, if a candidate output file contains the body state for the last integration step and the most restrictive of END_EPOCH and PROPAGATION_PERIOD is larger for the current propagation than for the previously-propagated orbit, then the propagation is resumed from that final epoch and state."
 
   "Search for output in directory":
     "prefix": "SEARCH_OUTPUT_DIRECTORY_PATH"
     "leftLabel": "std::string"
-    "body": "SEARCH_OUTPUT_DIRECTORY_PATH  \"$1\"${2:\n}"
+    "body": "SEARCH_OUTPUT_DIRECTORY_PATH  '$1'${2:\n}"
     "description": "The (relative or absolute) path of the directory in which it will be searched for output files containing the results corresponding to the current propagation."
 
   "Search for output in files named":
     "prefix": "SEARCH_OUTPUT_FILENAME_PATTERN"
     "leftLabel": "std::string"
-    "body": "SEARCH_OUTPUT_FILENAME_PATTERN  \"${1:.+}\\\\.${2:orbout}\"${3:\n}"
-    "description": "The regular expression used to determine in which files it will be searched for the results corresponding to the current propagation. Since the character '.' has a special meaning in regular expressions, when wanting to match '.' literally, e.g. to specify the file extension, it has to be escaped by typing '\\.' The default regular expression matches all files with 'orbout' extension."
+    "body": "SEARCH_OUTPUT_FILENAME_PATTERN  '${1:.+}'${3:\n}"
+    "description": "The regular expression used to determine in which files it will be searched for the results corresponding to the current propagation. The program will only search in \"tespout\" files whose name matches the provided expression."
 
   "Search in subdirectories":
     "prefix": "SEARCH_IN_SUBDIRECTORIES"
@@ -382,18 +374,28 @@
     "body": "RESUMING_PROPAGATION_FROM_OUTPUT  ${1:WARN}${2:  % SILENT | WARN${3:\n}}"
     "description": "The response to a resuming propagation from output event. Possible values: SILENT, no message is printed; WARN, a message is printed to the console or terminal window."
 
-  "All variables and default values":
-    "prefix": "help"
+
+# tespin snippets
+".source.tespin":
+
+  "Include statement":
+    "prefix": "include"
+    "body": "#INCLUDE '$1'"
+    "description": "Include other input files to be parsed before the contents of this file. Relative or absolute paths can be used. Relative paths are defined with respect to the directory in which the file containing the include statement is located."
+
+  "Lists all supported parameters with their default values":
+    "prefix": "list"
     "body": '''
       %
-      % Input file for TESP (Tudat Earth Satellite Propagator)
-      % http://github.com/aleixpinardell/tesp/
+      % List of all the parameters that can be defined in "tespin" files.
+      % The default values are provided, together with a comment indicating the possible (range of) values.
+      %
+      % TESP - Tudat Earth Satellite Propagator - http://github.com/aleixpinardell/tesp/
       % The installed language package is compatible with TESP 0.1.0 or earlier.
       % Copyright (c) 2017 TU Delft.
       %
       $1
-      % #INCLUDE "path to an input file to be parsed before this one"
-      % Include-statements are not supported in "tespvar" files.
+      % #INCLUDE 'path to an input file to be parsed before this one'
 
 
       % ACCELERATION MODEL
@@ -424,14 +426,14 @@
 
       % INITIAL STATE
 
-      INITIAL_EPOCH  0.0  % (-INF, INF) years since J2000
+      INITIAL_EPOCH  0.0  % (-INF, INF) seconds since J2000, or formatted date 'YYYY-MM-DD hh:mm:ss'
 
       INITIAL_SEMIMAJOR_AXIS  7371.0  % (6371, INF) km
       INITIAL_ECCENTRICITY  0.0  % [0, 1)
       INITIAL_INCLINATION  0.0  % [0, 180] deg
-      INITIAL_ARGUMENT_PERIGEE  0.0  % [0, 360) deg
-      INITIAL_LONGITUDE_ASCENDING_NODE  0.0  % [0, 360) deg
-      INITIAL_TRUE_ANOMALY  0.0  % [0, 360) deg
+      INITIAL_ARGUMENT_PERIGEE  0.0  % [0, 360] deg
+      INITIAL_LONGITUDE_ASCENDING_NODE  0.0  % [0, 360] deg
+      INITIAL_TRUE_ANOMALY  0.0  % [0, 360] deg
 
       % INITIAL_PERIGEE_ALTITUDE  1000.0  % (0, INF) km
       % INITIAL_APOGEE_ALTITUDE  1000.0  % (0, INF) km
@@ -440,7 +442,10 @@
       % PROPAGATION SETTINGS
 
       PRELOAD_CELESTIAL_BODIES_DATA  YES  % NO | YES
-      MAXIMUM_PROPAGATION_PERIOD  10.0  % (0, INF) years
+
+      % The most restrective of these three will determine the actual duration of the propagation:
+      END_EPOCH  2015/12/31  % (-INF, INF) second since J2000, or formatted date 'YYYY-MM-DD hh:mm:ss'
+      PROPAGATION_PERIOD  10.0  % (0, INF) sidereal years
       REENTRY_ALTITUDE  0.0  % [0, INF) km
 
       PROPAGATOR_NAME  COWELL  % COWELL | ENCKE
@@ -453,14 +458,15 @@
 
       % OUTPUT SETTINGS
 
-      OUTPUT_DIRECTORY_PATH  ""
-      OUTPUT_FILE_NAME  "$FILENAME.orbout"
+      OUTPUT_DIRECTORY_PATH  ''
+      OUTPUT_FILE_NAME  '$FILENAME'
 
       OUTPUT_NUMERIC_PRECISION  8  % [1, INF)
 
       OUTPUT_INPUT_SETTINGS  YES  % NO | YES
       OUTPUT_RESULTS_COLUMNS_DESCRIPTIONS  YES  % NO | YES
       OUTPUT_COMPUTATION_TIME  YES  % NO | YES
+      OUTPUT_PROPAGATION_TERMINATION_CAUSE  YES  % NO | YES
 
       OUTPUT_BODY_KEPLERIAN_STATE  YES  % NO | YES
       OUTPUT_BODY_CARTESIAN_STATE  NO  % NO | YES
@@ -481,8 +487,8 @@
       SKIP_PROPAGATION_IF_RESULTS_FOUND  YES  % NO | YES
       ALLOW_RESUMING_PROPAGATION_FROM_RESULTS  YES  % NO | YES
 
-      SEARCH_OUTPUT_DIRECTORY_PATH  ""
-      SEARCH_OUTPUT_FILENAME_PATTERN  ".+\\\\.orbout"
+      SEARCH_OUTPUT_DIRECTORY_PATH  ''
+      SEARCH_OUTPUT_FILENAME_PATTERN  '.+'
       SEARCH_IN_SUBDIRECTORIES  NO  % NO | YES
       SEARCH_IGNORE_FILE_CONTENTS  NO  % NO | YES
 
@@ -502,4 +508,446 @@
       RESUMING_PROPAGATION_FROM_OUTPUT  WARN  % SILENT | WARN
 
     '''
-    "description": "Prints a list of all the variables with the default and allowed values."
+    "description": "Prints a list of all the recognized parameters with the default values and the allowed (range of) values."
+
+
+# tespvar snippets
+".source.tespvar":
+
+  "linspace":
+    "prefix": "linspace"
+    "body": "linspace(${1:ini},${2:end},${3:N})"
+    "description": "Generate linearly spaced vector."
+    "descriptionMoreURL": "https://mathworks.com/help/matlab/ref/linspace.html"
+
+  "sprintf":
+    "prefix": "sprintf"
+    "body": "sprintf('${1:formatSpec}',${2:A1,...,An})"
+    "description": "Format data into string."
+    "descriptionMoreURL": "https://mathworks.com/help/matlab/ref/sprintf.html"
+
+  "Maximum concurrent propagations":
+    "prefix": "MAXIMUM_CONCURRENT_PROPAGATIONS"
+    "leftLabel": "int"
+    "body": "MAXIMUM_CONCURRENT_PROPAGATIONS  ${1:0}${2:  % [0, INF)${3:\n}}"
+    "description": "The maximum number of propagations that can be run concurrently when using GNU Parallel. Specify a value of 0 to run concurrently as many propagations as CPUs are available."
+    "descriptionMoreURL": "https://www.gnu.org/software/parallel/"
+
+  "Directory of the shared input file":
+    "prefix": "SHARED_INPUT_FILE_DIRECTORY_PATH"
+    "leftLabel": "std::string"
+    "body": "SHARED_INPUT_FILE_DIRECTORY_PATH  '$1'${2:\n}"
+    "description": "The (relative or absolute) path of the directory in which the input file containing the settings that are shared amongst all the propagations will be generated."
+
+  "Filename of the shared input file":
+    "prefix": "SHARED_INPUT_FILE_NAME"
+    "leftLabel": "std::string"
+    "body": "SHARED_INPUT_FILE_NAME  '${1:shared}'${2:\n}"
+    "description": "The filename of the input file containing the settings that are shared amongst all the propagations. It is not necessary to provide a file extension; the \"tespin\" extension will be used."
+
+  "Directory (tree) of the individual input files":
+    "prefix": "INPUT_FILES_DIRECTORY_TREE"
+    "leftLabel": "std::string"
+    "body": "INPUT_FILES_DIRECTORY_TREE  '${1:inputs}'${2:\n}"
+    "description": "The (relative or absolute) path of the directory (tree) in which the individual input files will be generated. This variable accepts literal strings and formatted strings."
+
+  "File-naming pattern of the individual input files":
+    "prefix": "INPUT_FILES_NAMING_PATTERN"
+    "leftLabel": "std::string"
+    "body": "INPUT_FILES_NAMING_PATTERN  sprintf('${1:formatSpec}',${2:A1,...,An})${3:\n}"
+    "description": "The file-naming pattern to uniquely identify each of the input files. This variable does not accept literal strings. All the parameters whose value is not constant must be used either in INPUT_FILES_DIRECTORY_TREE or INPUT_FILES_NAMING_PATTERN."
+
+  "Provides an example 'tespvar' file":
+    "prefix": "example"
+    "body": '''
+      %
+      % Example "tespvar" file for TESP's MATLAB package.
+      %
+      % TESP - Tudat Earth Satellite Propagator - http://github.com/aleixpinardell/tesp/
+      % The installed language package is compatible with TESP 0.1.0 or earlier.
+      % Copyright (c) 2017 TU Delft.
+      %
+      $1
+      GEOPOTENTIAL_DEGREE               1:4  % = [1 2 3 4]
+      THIRD_BODY_ATTRACTION_MOON        [YES, NO]
+
+      BODY_MASS                         100:25:150  % = [100 125 150]
+
+      %
+      % Epochs can be provided in seconds since J2000 or as formatted-date strings.
+      % If provided as strings, TESP will convert them to seconds since J2000 before performing the numerical operations.
+      % Thus, the following line is equivalent to:  INITIAL_EPOCH  [0 7884000 15768000 23652000 31536000] which represents
+      % '01-Jan-2000 12:00', '01-Apr-2000 18:00', '02-Jul-2000 00:00', '01-Oct-2000 00:00' and '31-Dec-2000 12:00'.
+      %
+      INITIAL_EPOCH                     linspace('2000-01-01 12:00','2000-12-31 12:00',5)
+      %
+      % While formatted dates can only be provided as 'YYYY-MM-DD hh:mm:ss' in "tespin" files, since "tespvar" files are
+      % pre-processed by MATLAB, it is possible to provide dates in any format recognized by MATLAB's function datetime
+      % Some examples:
+      % '2000-01-01 12:00'
+      % '2000-01-01 12:00:00'
+      % '1-Jan-2000 12:00'
+      % '1-Jan-2000 0:00 PM'
+      %
+      % The right way to provide an array of formatted-dates is af if they were simply doubles:
+      % ['2000-01-01 8:00','2000-01-01 9:00','2000-01-01 10:00']
+      % When specifying a colon-range, ommitting the stepsize leads to steps of 1 s:
+      % '2000-01-01 12:00:00':'2000-01-01 12:00:05' = [0 1 2 3 4 5]
+      % The stepsize can be specified using the same date format. For instance, if we want steps of 1.5 days:
+      % '2000-01-01':'1.5 d':'2000-12-31'
+      % To specify a step, we provide the amount followed by one space and the units (in singular or plural). Units:
+      % Year: y, year, years
+      % Month: mo, month, months
+      % Day: d, day, days
+      % Hour: h, hour, hours
+      % Minute: min, minute, minutes
+      % Second: s, sec, second, seconds
+      %
+
+      INITIAL_PERIGEE_ALTITUDE          150
+      INITIAL_APOGEE_ALTITUDE           150
+      REENTRY_ALTITUDE                  100
+
+      PROPAGATION_PERIOD        1
+
+      INPUT_FILES_PARENT_DIRECTORY_PATH 'inputs'
+      INPUT_FILES_DIRECTORY_TREE        sprintf('moon_%s',THIRD_BODY_ATTRACTION_MOON)
+      INPUT_FILES_NAMING_PATTERN        sprintf('order=%i,mass=%g,epoch=%.2f',GEOPOTENTIAL_DEGREE,BODY_MASS,INITIAL_EPOCH)
+
+      %
+      % EXPLANATION
+      %
+      % The variable values are defined using MATLAB code: semi:colon:range, linspace or [list of elements].
+      % Since properties stored as booleans or enumerations are integer-convertible, it is possible to provide e.g.:
+      % [NO YES]  or  [RK45, RK56, RK78]
+      % Not all the properties accept variable values. Namely, the properties under the following groeps don't:
+      % OUTPUT SETTINGS, PREVIOUS OUTPUT FILES, WARNINGS AND ERRORS, TESPVAR SETTINGS
+      %
+      % In this example, there are four variable properties:
+      % GEOPOTENTIAL_DEGREE, THIRD_BODY_ATTRACTION_MOON, BODY_MASS and INITIAL_EPOCH.
+      %
+      % These variables have 4, 2, 3 and 5 different values each, so they represent 4*2*3*5 = 120 different input settings.
+      % By providing this file to the TESP's MATLAB package's function "populate", 120 "tespin" files will be generated.
+      %
+      % By default, a shared.tespin file is generated in the same directory in which this file is contained.
+      % This file will contain all the properties that have been defined as constant, namely:
+      % INITIAL_PERIGEE_ALTITUDE, INITIAL_APOGEE_ALTITUDE, REENTRY_ALTITUDE and PROPAGATION_PERIOD.
+      % Each of the 120 individual "tespin" files will #INCLUDE the shared.tespin file and define the variable properties.
+      %
+      % All the variable properties must be used either in INPUT_FILES_DIRECTORY_TREE or INPUT_FILES_NAMING_PATTERN.
+      % This guarantees that each generated input file will have a unique path.
+      %
+      % Assuming that the directory tree (+ denotes a directory, - a file) before generating the input files is:
+      % + myOptimization
+      %     - settings.tespvar
+      %
+      % This example would lead to the following directory tree after running MATLAB's TESP.populate('settings.tespvar')
+      % + myOptimization
+      %     + inputs
+      %         + moon_NO
+      %             - order=1,mass=100,epoch=0.00.tespin
+      %               ... 58 other files ...
+      %             - order=4,mass=150,epoch=1.00.tespin
+      %         + moon_YES
+      %             - order=1,mass=100,epoch=0.00.tespin
+      %               ... 58 other files ...
+      %             - order=4,mass=150,epoch=1.00.tespin
+      %     - settings.tespvar
+      %     - shared.tespin
+      %
+      % Then, GNU Paralle can be used to propagate all the orbits (concurrently) by running in the terminal:
+      % cd ~/myOptimization
+      % parallel tesp ::: inputs/*/*.tespin
+      %
+      % By default, the output will be generated inside an "outputs" directory following the same directory tree and
+      % file-naming as for the input files. This is possible because MATLAB's TESP populate function overwrites the default
+      % value of OUTPUT_DIRECTORY_PATH from '' to 'outputs/$INPUT_FILES_DIRECTORY_TREE' and the default value of
+      % OUTPUT_FILE_NAME from '$FILENAME' to '$INPUT_FILES_NAMING_PATTERN'.
+      % Remember that $FILENAME refers to the name of the file in which it is used, i.e. 'settings' in this example.
+      %
+      % When providing formatted strings in "tespvar" files, it is possible to use MATLAB's sprintf function, as in
+      % INPUT_FILES_DIRECTORY_TREE and INPUT_FILES_NAMING_PATTERN in the example.
+      % When a boolean property is printed as a string, using %s, it will print either 'NO' or 'YES'.
+      % When printing it as an integer, using %d or %i, it will print either '0' or '1'.
+      % Enumerations work similarly. For instance, printing PROPAGATOR_NAME with %s will give 'COWELL' or 'ENCKE'.
+      % Printing it with %d or %i will give '0' (for Cowell) or '1' (for Encke).
+      %
+      % It is also possible to provide formatted strings in "tespvar" files using a simpler (less-powerful) alternative.
+      % A string containing a property name preceeded by $ is also a formatted string. The default format is used:
+      % %s for variables stored as std::string, bool or enum
+      % %i for variables stored as int
+      % %g for variables stored as double
+      %
+      % Thus, these two lines:
+      % INPUT_FILES_DIRECTORY_TREE  sprintf('moon_%s',THIRD_BODY_ATTRACTION_MOON)
+      % INPUT_FILES_NAMING_PATTERN  sprintf('order=%i,mass=%g,epoch=%g',GEOPOTENTIAL_DEGREE,BODY_MASS,INITIAL_EPOCH)
+      % are equivalent to:
+      % INPUT_FILES_DIRECTORY_TREE  'moon_$THIRD_BODY_ATTRACTION_MOON'
+      % INPUT_FILES_NAMING_PATTERN  'order=$GEOPOTENTIAL_DEGREE,mass=$BODY_MASS,epoch=$INITIAL_EPOCH'
+      % However, here INITIAL_EPOCH will be printed using the %g format, while in the example the %.2f format was used.
+      %
+
+    '''
+    "description": "Prints an example 'tespvar' file explaining the main available functionalities."
+
+
+  "Lists all supported parameters with their default values":
+    "prefix": "list"
+    "body": '''
+      %
+      % List of all the parameters that can be defined in "tespvar" files.
+      % The default values are provided, together with a comment indicating the possible (range of) values.
+      %
+      % TESP - Tudat Earth Satellite Propagator - http://github.com/aleixpinardell/tesp/
+      % The installed language package is compatible with TESP 0.1.0 or earlier.
+      % Copyright (c) 2017 TU Delft.
+      %
+      $1
+
+      % ACCELERATION MODEL
+
+      GEOPOTENTIAL_MODEL  GGM02C  % GGM02C | GGM02S
+      GEOPOTENTIAL_DEGREE  2  % [1, 160]
+      GEOPOTENTIAL_ORDER  0  % [0, 160]
+
+      THIRD_BODY_ATTRACTION_SUN  YES  % NO | YES
+      THIRD_BODY_ATTRACTION_MOON  YES  % NO | YES
+
+      ATMOSPHERIC_MODEL  NRLMSISE00  % NRLMSISE00 | EXPONENTIAL
+      ATMOSPHERIC_DRAG  YES  % NO | YES
+
+      SOLAR_RADIATION_PRESSURE  YES  % NO | YES
+      IGNORE_ECLIPSES  NO  % NO | YES
+
+
+      % BODY PROPERTIES
+
+      BODY_MASS  100.0  % (0, INF) kg
+      BODY_CROSS_SECTIONAL_AREA  10.0  % (0, INF) m^2
+
+      ALTITUDE_DEPENDENT_DRAG_COEFFICIENT  NO  % NO | YES
+      BODY_DRAG_COEFFICIENT  2.5  % (0, INF)
+      BODY_RADIATION_PRESSURE_COEFFICIENT  1.5  % [1, 2]
+
+
+      % INITIAL STATE
+
+      INITIAL_EPOCH  0.0  % (-INF, INF) seconds since J2000, or formatted date 'YYYY-MM-DD hh:mm:ss'
+
+      INITIAL_SEMIMAJOR_AXIS  7371.0  % (6371, INF) km
+      INITIAL_ECCENTRICITY  0.0  % [0, 1)
+      INITIAL_INCLINATION  0.0  % [0, 180] deg
+      INITIAL_ARGUMENT_PERIGEE  0.0  % [0, 360] deg
+      INITIAL_LONGITUDE_ASCENDING_NODE  0.0  % [0, 360] deg
+      INITIAL_TRUE_ANOMALY  0.0  % [0, 360] deg
+
+      % INITIAL_PERIGEE_ALTITUDE  1000.0  % (0, INF) km
+      % INITIAL_APOGEE_ALTITUDE  1000.0  % (0, INF) km
+
+
+      % PROPAGATION SETTINGS
+
+      PRELOAD_CELESTIAL_BODIES_DATA  YES  % NO | YES
+
+      % The most restrective of these three will determine the actual duration of the propagation:
+      END_EPOCH  2015/12/31  % (-INF, INF) second since J2000, or formatted date 'YYYY-MM-DD hh:mm:ss'
+      PROPAGATION_PERIOD  10.0  % (0, INF) sidereal years
+      REENTRY_ALTITUDE  0.0  % [0, INF) km
+
+      PROPAGATOR_NAME  COWELL  % COWELL | ENCKE
+
+      INTEGRATOR_NAME  RK4  % RK4 | RK45 | RK56 | RK78 | DP78
+      INTEGRATOR_FIXED_STEPSIZE  60.0  % (0, INF) s
+      % INTEGRATOR_INITIAL_STEPSIZE  60.0  % (0, INF) s
+      % INTEGRATOR_ERROR_TOLERANCE  1.0E-12  % (0, INF)
+
+
+      % OUTPUT SETTINGS
+
+      OUTPUT_DIRECTORY_PATH  'outputs/$INPUT_FILES_DIRECTORY_TREE'
+      OUTPUT_FILE_NAME  '$INPUT_FILES_NAMING_PATTERN'
+
+      OUTPUT_NUMERIC_PRECISION  8  % [1, INF)
+
+      OUTPUT_INPUT_SETTINGS  YES  % NO | YES
+      OUTPUT_RESULTS_COLUMNS_DESCRIPTIONS  YES  % NO | YES
+      OUTPUT_COMPUTATION_TIME  YES  % NO | YES
+      OUTPUT_PROPAGATION_TERMINATION_CAUSE  YES  % NO | YES
+
+      OUTPUT_BODY_KEPLERIAN_STATE  YES  % NO | YES
+      OUTPUT_BODY_CARTESIAN_STATE  NO  % NO | YES
+      OUTPUT_SUN_POSITION  NO  % NO | YES
+      OUTPUT_MOON_POSITION  NO  % NO | YES
+
+      OUTPUT_ONE_IN_EVERY_INTEGRATION_STEPS  1  % [1, INF)
+      OUTPUT_ONLY_LAST_INTEGRATION_STEP  NO  % NO | YES
+
+      PRINT_SUCCESS_MESSAGE_AFTER_PROPAGATION  YES  % NO | YES
+      DELETE_INPUT_FILE_AFTER_PROPAGATION  NO  % NO | YES
+
+
+      % PREVIOUS OUTPUT FILES
+
+      SKIP_PROPAGATION_IF_OUTPUT_FILE_EXISTS  NO  % NO | YES
+
+      SKIP_PROPAGATION_IF_RESULTS_FOUND  YES  % NO | YES
+      ALLOW_RESUMING_PROPAGATION_FROM_RESULTS  YES  % NO | YES
+
+      SEARCH_OUTPUT_DIRECTORY_PATH  ''
+      SEARCH_OUTPUT_FILENAME_PATTERN  '.+'
+      SEARCH_IN_SUBDIRECTORIES  NO  % NO | YES
+      SEARCH_IGNORE_FILE_CONTENTS  NO  % NO | YES
+
+      OUTPUT_FOR_SKIPPED_PROPAGATION  DUPLICATE  % NONE | REFERENCE | DUPLICATE
+
+
+      % WARNINGS AND ERRORS
+
+      NON_DEFINED_VARIABLE  USE_DEFAULT  % USE_DEFAULT | WARN | ERROR
+      UNRECOGNIZED_VARIABLE_NAME  WARN  % IGNORE | WARN | ERROR
+      NON_VALID_VALUE  ERROR  % USE_DEFAULT | WARN | ERROR
+
+      MULTIPLY_DEFINED_VARIABLE_DIF_FILES  USE_LAST  % USE_LAST | WARN | ERROR
+      MULTIPLY_DEFINED_VARIABLE_SAME_FILE  WARN  % USE_LAST | WARN | ERROR
+
+      SKIPPING_PROPAGATION  WARN  % SILENT | WARN
+      RESUMING_PROPAGATION_FROM_OUTPUT  WARN  % SILENT | WARN
+
+    '''
+    "description": "Prints a list of all the recognized parameters with the default values and the allowed (range of) values."
+
+# Null out the variable snippets so that they are not available when in sprintf()
+".source.tespvar .scope.sprintf":
+  "Geopotential model":
+    "prefix": "GEOPOTENTIAL_MODEL"
+  "Degree of the geopotential":
+    "prefix": "GEOPOTENTIAL_DEGREE"
+  "Order of the geopotential":
+    "prefix": "GEOPOTENTIAL_ORDER"
+  "Sun's gravity":
+    "prefix": "THIRD_BODY_ATTRACTION_SUN"
+  "Moon's gravity":
+    "prefix": "THIRD_BODY_ATTRACTION_MOON"
+  "Atmospheric model":
+    "prefix": "ATMOSPHERIC_MODEL"
+  "Atmospheric drag":
+    "prefix": "ATMOSPHERIC_DRAG"
+  "Solar radiation pressure":
+    "prefix": "SOLAR_RADIATION_PRESSURE"
+  "Ignore Earth's shadow":
+    "prefix": "IGNORE_ECLIPSES"
+  "Body mass":
+    "prefix": "BODY_MASS"
+  "Body cross-sectional area":
+    "prefix": "BODY_CROSS_SECTIONAL_AREA"
+  "Altitude dependent drag coefficient":
+    "prefix": "ALTITUDE_DEPENDENT_DRAG_COEFFICIENT"
+  "Body drag coefficient":
+    "prefix": "BODY_DRAG_COEFFICIENT"
+  "Body radiation pressure coefficient":
+    "prefix": "BODY_RADIATION_PRESSURE_COEFFICIENT"
+  "Initial epoch":
+    "prefix": "INITIAL_EPOCH"
+  "Initial semi-major axis":
+    "prefix": "INITIAL_SEMIMAJOR_AXIS"
+  "Initial eccentricity":
+    "prefix": "INITIAL_ECCENTRICITY"
+  "Initial inclination":
+    "prefix": "INITIAL_INCLINATION"
+  "Initial argument of perigee":
+    "prefix": "INITIAL_ARGUMENT_PERIGEE"
+  "Initial longitude of the ascending node":
+    "prefix": "INITIAL_LONGITUDE_ASCENDING_NODE"
+  "Initial true anomaly":
+    "prefix": "INITIAL_TRUE_ANOMALY"
+  "Initial perigee altitude":
+    "prefix": "INITIAL_PERIGEE_ALTITUDE"
+  "Initial apogee altitude":
+    "prefix": "INITIAL_APOGEE_ALTITUDE"
+  "Preload celestial bodies data":
+    "prefix": "PRELOAD_CELESTIAL_BODIES_DATA"
+  "Maximum propagation period":
+    "prefix": "PROPAGATION_PERIOD"
+  "Re-entry altitude":
+    "prefix": "REENTRY_ALTITUDE"
+  "Propagator name":
+    "prefix": "PROPAGATOR_NAME"
+  "Integrator name":
+    "prefix": "INTEGRATOR_NAME"
+  "Stepsize of the fixed-stepsize integrator":
+    "prefix": "INTEGRATOR_FIXED_STEPSIZE"
+  "Initial stepsize of the variable-stepsize integrator":
+    "prefix": "INTEGRATOR_INITIAL_STEPSIZE"
+  "Error tolerance of the variable-stepsize integrator":
+    "prefix": "INTEGRATOR_ERROR_TOLERANCE"
+  "Output directory path":
+    "prefix": "OUTPUT_DIRECTORY_PATH"
+  "Output file's name":
+    "prefix": "OUTPUT_FILE_NAME"
+  "Numeric precision":
+    "prefix": "OUTPUT_NUMERIC_PRECISION"
+  "Output input settings":
+    "prefix": "OUTPUT_INPUT_SETTINGS"
+  "Output description of the columns of the result matrix":
+    "prefix": "OUTPUT_RESULTS_COLUMNS_DESCRIPTIONS"
+  "Output computation time":
+    "prefix": "OUTPUT_COMPUTATION_TIME"
+  "Output propagation termination cause":
+    "prefix": "OUTPUT_PROPAGATION_TERMINATION_CAUSE"
+  "Output body Keplerian state":
+    "prefix": "OUTPUT_BODY_KEPLERIAN_STATE"
+  "utput body Cartesian state":
+    "prefix": "OUTPUT_BODY_CARTESIAN_STATE"
+  "Output Sun position":
+    "prefix": "OUTPUT_SUN_POSITION"
+  "Output Moon position":
+    "prefix": "OUTPUT_MOON_POSITION"
+  "Output frequency":
+    "prefix": "OUTPUT_ONE_IN_EVERY_INTEGRATION_STEPS"
+  "Output only last integration step":
+    "prefix": "OUTPUT_ONLY_LAST_INTEGRATION_STEP"
+  "Print success message":
+    "prefix": "PRINT_SUCCESS_MESSAGE_AFTER_PROPAGATION"
+  "Delete input file":
+    "prefix": "DELETE_INPUT_FILE_AFTER_PROPAGATION"
+  "Skip propagation if output exists":
+    "prefix": "SKIP_PROPAGATION_IF_OUTPUT_FILE_EXISTS"
+  "Skip propagation if results found":
+    "prefix": "SKIP_PROPAGATION_IF_RESULTS_FOUND"
+  "Allow resuming propagation from results":
+    "prefix": "ALLOW_RESUMING_PROPAGATION_FROM_RESULTS"
+  "Search for output in directory":
+    "prefix": "SEARCH_OUTPUT_DIRECTORY_PATH"
+  "Search for output in files named":
+    "prefix": "SEARCH_OUTPUT_FILENAME_PATTERN"
+  "Search in subdirectories":
+    "prefix": "SEARCH_IN_SUBDIRECTORIES"
+  "Search ignore file contents":
+    "prefix": "SEARCH_IGNORE_FILE_CONTENTS"
+  "Output for skipped propagation":
+    "prefix": "OUTPUT_FOR_SKIPPED_PROPAGATION"
+  "Non-defined variable":
+    "prefix": "NON_DEFINED_VARIABLE"
+  "Unrecognized variable name":
+    "prefix": "UNRECOGNIZED_VARIABLE_NAME"
+  "Multiply-defined variable in different input files":
+    "prefix": "MULTIPLY_DEFINED_VARIABLE_DIF_FILES"
+  "Multiply-defined variable in the same input file":
+    "prefix": "MULTIPLY_DEFINED_VARIABLE_SAME_FILE"
+  "Non-valid value":
+    "prefix": "NON_VALID_VALUE"
+  "Skipping propagation":
+    "prefix": "SKIPPING_PROPAGATION"
+  "Resuming propagation from output":
+    "prefix": "RESUMING_PROPAGATION_FROM_OUTPUT"
+  # tespvar-only variables
+  "Maximum concurrent propagations":
+    "prefix": "MAXIMUM_CONCURRENT_PROPAGATIONS"
+  "Directory of the shared input file":
+    "prefix": "SHARED_INPUT_FILE_DIRECTORY_PATH"
+  "Filename of the shared input file":
+    "prefix": "SHARED_INPUT_FILE_NAME"
+  "Directory (tree) of the individual input files":
+    "prefix": "INPUT_FILES_DIRECTORY_TREE"
+  "File-naming pattern of the individual input files":
+    "prefix": "INPUT_FILES_NAMING_PATTERN"

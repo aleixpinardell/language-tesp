@@ -1,6 +1,11 @@
 ### 0.3.0
-* Changed the supported file extension from "orbinp" to "tespin" for input files.
-* Added support for files with extension "tespvar", which can be provided to MATLAB's TESP package to quickly generate a set of "orbinp" files.
+* Dropped support for providing strings using double quotes. Only single quotes are supported now.
+* Added support for providing the initial epoch using the date format 'YYYY-MM-DD hh:mm:ss'. Moreover, when not using a formatted date, now the epoch has to be provided in seconds (since J2000) rather than in years, in order to avoid inconsistencies about the definition of year (Julian year, sidereal year, etc).
+* Changed the supported file extension from "orbinp" to "tespin" for input files, although "orbinp" files are still recognized temporarily until the next major or minor release.
+* Added support for files with extension "tespvar", which can be provided to TESP's MATLAB package to quickly generate a set of "orbinp" files.
+* Added support for single-quoted strings. Now, both 'this' and "this" are valid strings. By default, single-quotes are provided in by the snippets, as "tespvar" files include some MATLAB code and MATLAB only supports single-quoted strings.
+* Changed the "help" snippet prefix to "list".
+* Added an "example" snippet for "tespvar" files.
 
 ##### 0.2.3
 * Removed support for "orbout" files. These files should not be modified by the user and will generally be read and processed by other programs rather than manually. Moreover, even when support was provided, the TESP grammar was not loaded by Atom when the file was very large, i.e. when it contained a large results matrix.

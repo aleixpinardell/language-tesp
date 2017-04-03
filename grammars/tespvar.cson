@@ -1,14 +1,23 @@
 fileTypes: [
   "tespvar"
 ]
-name: "TESP"
+name: "TESP - tespvar"
 scopeName: "source.tespvar"
 patterns: [
   {
-    include: 'source.tespin#recognized_variables'
+    include: '#matlab'
+  }
+  {
+    include: 'source.tespin#variables_names'
+  }
+  {
+    include: '#variables_names'
   }
   {
     include: '#user_defined_variables'
+  }
+  {
+    include: 'source.tespin#variables_values'
   }
   {
     include: 'source.tespin#comments'
@@ -19,13 +28,57 @@ patterns: [
 ]
 
 repository:
-  user_defined_variables:
+  matlab:
     patterns: [
-      {
-        match: "(\\$.+?)\\b"
+      { # linspace
+        match: "\\b(linspace)\\b"
         captures:
           "1":
-            name: "entity.name.function.tesp"
+            name: "entity.name.function.linspace.tesp"
+        name: "meta.linspace.tesp"
+      }
+      { # sprintf
+        match: "\\b(sprintf)\\s*\\(\\s*('.*?')\\s*,(.*?\\))"
+        captures:
+          "1":
+            name: "entity.name.function.sprintf.tesp"
+          "2":
+            name: "string.single-quoted.sprintf.tesp"
+            patterns: [
+              {
+                match: "%[-+ 0#]?[0-9]*(.[0-9]*)?[difeEgGs]"
+                name: "constant.character.escape.tesp"
+              }
+            ]
+          "3":
+            name: "scope.sprintf.tesp"
+            patterns: [
+              {
+                comment: "These variables cannot be parametrized"
+                match: "\\b(OUTPUT_DIRECTORY_PATH|OUTPUT_FILE_NAME|OUTPUT_NUMERIC_PRECISION|OUTPUT_INPUT_SETTINGS|OUTPUT_RESULTS_COLUMNS_DESCRIPTIONS|OUTPUT_COMPUTATION_TIME|OUTPUT_BODY_KEPLERIAN_STATE|OUTPUT_BODY_CARTESIAN_STATE|OUTPUT_SUN_POSITION|OUTPUT_MOON_POSITION|OUTPUT_ONE_IN_EVERY_INTEGRATION_STEPS|OUTPUT_ONLY_LAST_INTEGRATION_STEP|PRINT_SUCCESS_MESSAGE_AFTER_PROPAGATION|DELETE_INPUT_FILE_AFTER_PROPAGATION|SKIP_PROPAGATION_IF_OUTPUT_FILE_EXISTS|SKIP_PROPAGATION_IF_RESULTS_FOUND|ALLOW_RESUMING_PROPAGATION_FROM_RESULTS|SEARCH_OUTPUT_DIRECTORY_PATH|SEARCH_OUTPUT_FILENAME_PATTERN|SEARCH_IN_SUBDIRECTORIES|SEARCH_IGNORE_FILE_CONTENTS|OUTPUT_FOR_SKIPPED_PROPAGATION|NON_DEFINED_VARIABLE|UNRECOGNIZED_VARIABLE_NAME|NON_VALID_VALUE|MULTIPLY_DEFINED_VARIABLE_DIF_FILES|MULTIPLY_DEFINED_VARIABLE_SAME_FILE|SKIPPING_PROPAGATION|RESUMING_PROPAGATION_FROM_OUTPUT|MAXIMUM_CONCURRENT_PROPAGATIONS|SHARED_INPUT_FILE_DIRECTORY_PATH|SHARED_INPUT_FILE_NAME|INPUT_FILES_DIRECTORY_TREE|INPUT_FILES_NAMING_PATTERN)\\b"
+                captures:
+                  "1":
+                    name: "invalid.illegal.non-parametrizable-variable.tesp"
+                name: "meta.invalid.illegal.non-parametrizable-variable.tesp"
+              }
+              {
+                include: "source.tespin#variables_names"
+              }
+              {
+                include: "#variables_names"
+              }
+              {
+                include: "#user_defined_variables"
+              }
+            ]
+        name: "meta.sprintf.tesp"
+      }
+    ]
+
+  colon_range:
+    patterns: [
+      {
+        match: "((\\b|[+\\-.])[0-9]*\\.?[0-9]+([eE][+-]?[0-9]+)?:)([+\\-.]?[0-9]*\\.?[0-9]+([eE][+-]?[0-9]+)?:)?([+\\-.]?[0-9]*\\.?[0-9]+([eE][+-]?[0-9]+)?)\\b"
         name: "meta.entity.name.function.tesp"
       }
     ]
@@ -34,10 +87,32 @@ repository:
     patterns: [
       {
         comment: "Include statements are not supported in \"tespvar\" files."
-        match: "^\\s*(\#INCLUDE\\s+\".*?\")"
+        match: "^\\s*(\#INCLUDE\\s+('|\").*?\\2)"
         captures:
           "1":
-            name: "invalid.illegal.tesp"
-        name: "meta.invalid.illegal.tesp"
+            name: "invalid.illegal.include.tesp"
+        name: "meta.invalid.illegal.include.tesp"
+      }
+    ]
+
+  variables_names:
+    patterns: [
+      {
+        match: "\\s*\\b(MAXIMUM_CONCURRENT_PROPAGATIONS|SHARED_INPUT_FILE_DIRECTORY_PATH|SHARED_INPUT_FILE_NAME|INPUT_FILES_PARENT_DIRECTORY_PATH|INPUT_FILES_DIRECTORY_TREE|INPUT_FILES_NAMING_PATTERN)\\b"
+        captures:
+          "1":
+            name: "variable.language.tesp"
+        name: "meta.variable.language.tesp"
+      }
+    ]
+
+  user_defined_variables:
+    patterns: [
+      {
+        match: "\\s*(\\$(?:[a-z]|[A-Z]|_)+?(?:[0-9]|[a-z]|[A-Z]|_)+?)\\b"
+        captures:
+          "1":
+            name: "class"
+        name: "meta.class"
       }
     ]

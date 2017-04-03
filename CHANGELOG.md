@@ -1,3 +1,9 @@
+##### 0.4.1
+* Version renaming.
+
+### 0.4.0
+* Version renaming.
+
 ### 0.3.0
 * Dropped support for providing strings using double quotes. Only single quotes are supported now.
 * Added support for providing the initial epoch using the date format 'YYYY-MM-DD hh:mm:ss'. Moreover, when not using a formatted date, now the epoch has to be provided in seconds (since J2000) rather than in years, in order to avoid inconsistencies about the definition of year (Julian year, sidereal year, etc).

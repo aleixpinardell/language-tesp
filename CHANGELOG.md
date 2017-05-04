@@ -1,3 +1,40 @@
+### 0.5.0
+* Added support for settings specific to the DSST propagator.
+* Added output options for the DSST propagator.
+* Added support for outputting the propagation time, which, in contrast with the computation time, does not include the time required to set up the model, and only accounts for the time that was required for integrating the equations of motion from the initial to the final epoch.
+* Added support for providing custom space weather files to be used by the NRLMSISE00 atmosphere model during propagation.
+* Addition of the #ATTACH keyword in TESPVAR files to match the values of two or more variables one-to-one. For instance, the following code generates 4 TESPIN files (namely 0-200, 0-300, 5-200 and 5-300):
+```
+INITIAL_INCLINATION  [0 5]
+INITIAL_PERIGEE_ALTITUDE  [200 300]
+```
+while the following code will only generate 2 TESPIN files (namely 0-200 and 5-300):
+```
+INITIAL_INCLINATION  [0 5]
+INITIAL_PERIGEE_ALTITUDE  [200 300]
+#ATTACH INITIAL_INCLINATION INITIAL_PERIGEE_ALTITUDE
+```
+* Support for user-defined variables to which a set of values for several parameters can be defined to each case. For instance, the following syntax is now valid:
+```
+  $propagatorSettings {
+    'cowell' {
+      PROPAGATOR_NAME  COWELL
+      INTEGRATOR_NAME  RK78
+      INTEGRATOR_ERROR_TOLERANCE  1.0e-9
+      PRELOAD_CELESTIAL_BODIES_DATA  YES
+    }
+    'dsst' {
+      PROPAGATOR_NAME  DSST
+      INTEGRATOR_NAME  RK4
+      INTEGRATOR_FIXED_STEPSIZE  '1 d'
+      PRELOAD_CELESTIAL_BODIES_DATA  NO
+    }
+  }
+
+  INPUT_FILES_DIRECTORY_TREE  sprintf('%s',$propagatorSettings)
+```
+In this example, all the files generated in the directory "cowell" will contain the first group of lines of code, while the files generated in the "dsst" directory will contain the four lines in the second group of code.
+
 ##### 0.4.1
 * Version renaming.
 

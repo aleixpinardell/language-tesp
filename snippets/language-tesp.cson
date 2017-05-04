@@ -32,17 +32,24 @@
     "body": "THIRD_BODY_ATTRACTION_MOON  ${1:YES}${2:  % NO | YES${3:\n}}"
     "description": "Whether the Moon's thrid-body central gravity should be included in the acceleration model."
 
+  "Atmospheric drag":
+    "prefix": "ATMOSPHERIC_DRAG"
+    "leftLabel": "bool"
+    "body": "ATMOSPHERIC_DRAG  ${1:YES}${2:  % NO | YES${3:\n}}"
+    "description": "Whether the drag caused by Earth's atmosphere should be included in the acceleration model."
+
   "Atmospheric model":
     "prefix": "ATMOSPHERIC_MODEL"
     "leftLabel": "enum"
     "body": "ATMOSPHERIC_MODEL  ${1:NRLMSISE00}${2:  % NRLMSISE00 | EXPONENTIAL${3:\n}}"
     "description": "Model used for the determination of atmospheric density."
 
-  "Atmospheric drag":
-    "prefix": "ATMOSPHERIC_DRAG"
-    "leftLabel": "bool"
-    "body": "ATMOSPHERIC_DRAG  ${1:YES}${2:  % NO | YES${3:\n}}"
-    "description": "Whether the drag caused by Earth's atmosphere should be included in the acceleration model."
+  "Space weather data file":
+    "prefix": "SPACE_WEATHER_FILE_PATH"
+    "leftLabel": "std::string"
+    "body": "SPACE_WEATHER_FILE_PATH  ${1:''}\n"
+    "description": "Relative path to the text file containing space weather data for the NRLMSISE00 atmosphere model. The file should be formatted as in https://celestrak.com/SpaceData/sw19571001.txt. When not specified or when assigned to an empty string, the default file contained in Tudat is used. This file was downloaded using the previous link but may not be up to date."
+    "descriptionMoreURL": "https://celestrak.com/SpaceData/"
 
   "Solar radiation pressure":
     "prefix": "SOLAR_RADIATION_PRESSURE"
@@ -194,6 +201,72 @@
     "body": "INTEGRATOR_ERROR_TOLERANCE  ${1:1.0E-12}${2:  % (0, INF)${3:\n}}"
     "description": "The error tolerance of the variable-stepsize integrator. Ignored if a fixed-stepsize integrator is being used. The first step is performed with the stepsize defined by INTEGRATOR_INITIAL_STEPSIZE, while the following stepsizes are determined so that the values of the relative or absolute errors do not exceed INTEGRATOR_ERROR_TOLERANCE."
 
+  "Altitude limit for the consideration of drag by the DSST propagator":
+    "prefix": "DSST_ALTITUDE_LIMIT_ATMOSPHERIC_DRAG"
+    "leftLabel": "double"
+    "body": "DSST_ALTITUDE_LIMIT_ATMOSPHERIC_DRAG  ${1:600}${2:  % [0, INF) km${3:\n}}"
+    "description": "The altitude, in km, above which drag is neglected for the computation of the effects of atmospheric drag on the mean element rates. Is set to 0, drag is never neglected and thus considered throught the entire orbit."
+
+  "Number of nodes for the Gaussian quadrature of atmospheric drag":
+    "prefix": "DSST_QUADRATURE_NODES_ATMOSPHERIC_DRAG"
+    "leftLabel": "int"
+    "body": "DSST_QUADRATURE_NODES_ATMOSPHERIC_DRAG  ${1:40}${2:  % [1, 64]${3:\n}}"
+    "description": "The number of nodes to be used for solving the averaging integral of atmospheric drag. If the to 2 or larger, a Gaussian quadrature is performed to solve the integral. When DSST_QUADRATURE_NODES_ATMOSPHERIC_DRAG_IS_SCALABLE is set to YES, the actual number of nodes is determined based on the value of DSST_QUADRATURE_NODES_ATMOSPHERIC_DRAG and the percentage of the orbit in which drag cannot be neglected (determined based on the value of DSST_ALTITUDE_LIMIT_ATMOSPHERIC_DRAG), and an odd number is always chosen so that the central node (perigee) is included. When DSST_QUADRATURE_NODES_ATMOSPHERIC_DRAG is set to 1, drag is only evaluated at perigee and a semi-empirical relationship is then used to estimate the total drag throught the entire orbit."
+
+  "Scalability of the number of nodes for the Gaussian quadrature of atmospheric drag":
+    "prefix": "DSST_QUADRATURE_NODES_ATMOSPHERIC_DRAG_IS_SCALABLE"
+    "leftLabel": "bool"
+    "body": "DSST_QUADRATURE_NODES_ATMOSPHERIC_DRAG_IS_SCALABLE  ${1:YES}${2:  % NO | YES${3:\n}}"
+    "description": "Whether the number of nodes used for solving the averaging integral of atmospheric drag is scalable. When DSST_QUADRATURE_NODES_ATMOSPHERIC_DRAG_IS_SCALABLE is set to YES, the actual number of nodes is determined based on the value of DSST_QUADRATURE_NODES_ATMOSPHERIC_DRAG and the percentage of the orbit in which drag cannot be neglected (determined based on the value of DSST_ALTITUDE_LIMIT_ATMOSPHERIC_DRAG), and an odd number is always chosen so that the central node (perigee) is included. When DSST_QUADRATURE_NODES_ATMOSPHERIC_DRAG_IS_SCALABLE is set to NO, the value of DSST_QUADRATURE_NODES_ATMOSPHERIC_DRAG is directly used, even if it is an even number."
+
+  "Number of nodes for the Gaussian quadrature of solar radiation pressure":
+    "prefix": "DSST_QUADRATURE_NODES_SOLAR_RADIATION_PRESSURE"
+    "leftLabel": "int"
+    "body": "DSST_QUADRATURE_NODES_SOLAR_RADIATION_PRESSURE  ${1:10}${2:  % [2, 64]${3:\n}}"
+    "description": "The number of nodes to be used for solving the averaging integral of solar radiation pressure when eclipses are considered. A Gaussian quadrature is performed to solve the integral. When DSST_QUADRATURE_NODES_SOLAR_RADIATION_PRESSURE_IS_SCALABLE is set to YES, the actual number of nodes is determined based on the value of DSST_QUADRATURE_NODES_SOLAR_RADIATION_PRESSURE and the percentage of the orbit during which the satellite does not experience eclipse."
+
+  "Scalability of the number of nodes for the Gaussian quadrature of solar radiation pressure":
+    "prefix": "DSST_QUADRATURE_NODES_SOLAR_RADIATION_PRESSURE_IS_SCALABLE"
+    "leftLabel": "bool"
+    "body": "DSST_QUADRATURE_NODES_SOLAR_RADIATION_PRESSURE_IS_SCALABLE  ${1:NO}${2:  % NO | YES${3:\n}}"
+    "description": "Whether the number of nodes used for solving the averaging integral of solar radiation pressure is scalable. When DSST_QUADRATURE_NODES_SOLAR_RADIATION_PRESSURE_IS_SCALABLE is set to YES, the actual number of nodes is determined based on the value of DSST_QUADRATURE_NODES_SOLAR_RADIATION_PRESSURE and the percentage of the orbit during which the satellite does not experience eclipse. When DSST_QUADRATURE_NODES_SOLAR_RADIATION_PRESSURE_IS_SCALABLE is set to NO, the value of DSST_QUADRATURE_NODES_SOLAR_RADIATION_PRESSURE is directly used, regardless of the duration of the eclipse."
+
+  "Maximum value for the first index of the serie expansion for Sun gravity":
+    "prefix": "DSST_THIRD_BODY_ATTRACTION_SUN_S"
+    "leftLabel": "int"
+    "body": "DSST_THIRD_BODY_ATTRACTION_SUN_S  ${1:2}${2:  % [2, INF)${3:\n}}"
+    "description": "The maximum value for the first index of the serie expansion performed to compute the effect of the Sun's thrid-body central gravity on the mean element rates."
+
+  "Maximum value for the second index of the serie expansion for Sun gravity":
+    "prefix": "DSST_THIRD_BODY_ATTRACTION_SUN_N"
+    "leftLabel": "int"
+    "body": "DSST_THIRD_BODY_ATTRACTION_SUN_N  ${1:2}${2:  % [2, INF)${3:\n}}"
+    "description": "The maximum value for the second index of the serie expansion performed to compute the effect of the Sun's thrid-body central gravity on the mean element rates."
+
+  "Maximum value for the first index of the serie expansion for Moon gravity":
+    "prefix": "DSST_THIRD_BODY_ATTRACTION_MOON_S"
+    "leftLabel": "int"
+    "body": "DSST_THIRD_BODY_ATTRACTION_MOON_S  ${1:2}${2:  % [2, INF)${3:\n}}"
+    "description": "The maximum value for the first index of the serie expansion performed to compute the effect of the Moon's thrid-body central gravity on the mean element rates."
+
+  "Maximum value for the second index of the serie expansion for Moon gravity":
+    "prefix": "DSST_THIRD_BODY_ATTRACTION_MOON_N"
+    "leftLabel": "int"
+    "body": "DSST_THIRD_BODY_ATTRACTION_MOON_N  ${1:2}${2:  % [2, INF)${3:\n}}"
+    "description": "The maximum value for the second index of the serie expansion performed to compute the effect of the Moon's thrid-body central gravity on the mean element rates."
+
+  "Maximum value for the first index of the serie expansion for solar radiation pressure":
+    "prefix": "DSST_SOLAR_RADIATION_PRESSURE_S"
+    "leftLabel": "int"
+    "body": "DSST_SOLAR_RADIATION_PRESSURE_S  ${1:2}${2:  % [2, INF)${3:\n}}"
+    "description": "The maximum value for the first index of the serie expansion performed to compute the effect of solar radiation pressure on the mean element rates. Ignored when eclipses are considered."
+
+  "Maximum value for the second index of the serie expansion for solar radiation pressure":
+    "prefix": "DSST_SOLAR_RADIATION_PRESSURE_N"
+    "leftLabel": "int"
+    "body": "DSST_SOLAR_RADIATION_PRESSURE_N  ${1:2}${2:  % [2, INF)${3:\n}}"
+    "description": "The maximum value for the second index of the serie expansion performed to compute the effect of solar radiation pressure on the mean element rates. Ignored when eclipses are considered."
+
   "Output directory path":
     "prefix": "OUTPUT_DIRECTORY_PATH"
     "leftLabel": "std::string"
@@ -224,11 +297,17 @@
     "body": "OUTPUT_RESULTS_COLUMNS_DESCRIPTIONS  ${1:YES}${2:  % NO | YES${3:\n}}"
     "description": "Whether to include a description of the columns of the result matrix in the output file. This description indicates which physical property each of the columns corresponds to, and the corresponding units."
 
+  "Output propagation time":
+    "prefix": "OUTPUT_PROPAGATION_TIME"
+    "leftLabel": "bool"
+    "body": "OUTPUT_PROPAGATION_TIME  ${1:YES}${2:  % NO | YES${3:\n}}"
+    "description": "Whether to include the computation time that was required to complete the propagation, in seconds, in the output file. This only includes integrating the equations of motion from the initial to the final epoch. Does not include model set-up or results export."
+
   "Output computation time":
     "prefix": "OUTPUT_COMPUTATION_TIME"
     "leftLabel": "bool"
     "body": "OUTPUT_COMPUTATION_TIME  ${1:YES}${2:  % NO | YES${3:\n}}"
-    "description": "Whether to include the total computation time that was required to complete the propagation, in seconds, in the output file."
+    "description": "Whether to include the total computation time that was required to complete the propagation, in seconds, in the output file. This includes every task except exporting results."
 
   "Output propagation termination cause":
     "prefix": "OUTPUT_PROPAGATION_TERMINATION_CAUSE"
@@ -259,6 +338,114 @@
     "leftLabel": "bool"
     "body": "OUTPUT_MOON_POSITION  ${1:NO}${2:  % NO | YES${3:\n}}"
     "description": "Whether to include three columns in the results matrix containing the position of the Moon, defined in an intertial J2000-Solar-System-barycentre-oriented, Earth-centred reference frame, at the requested integration steps. The columns, from left to right, correspond to these magnitudes (units): position X axis (m), position Y axis (m), position Z axis (m)."
+
+  "Output total mean element rates":
+    "prefix": "OUTPUT_DSST_MEAN_ELEMENT_RATES"
+    "leftLabel": "bool"
+    "body": "OUTPUT_DSST_MEAN_ELEMENT_RATES  ${1:NO}${2:  % NO | YES${3:\n}}"
+    "description": "Whether to include six columns in the results matrix containing the mean element rates due to all the included disturbing forces."
+
+  "Output mean element rates due to zonal terms":
+    "prefix": "OUTPUT_DSST_MEAN_ELEMENT_RATES_ZONAL_TERMS"
+    "leftLabel": "bool"
+    "body": "OUTPUT_DSST_MEAN_ELEMENT_RATES_ZONAL_TERMS  ${1:NO}${2:  % NO | YES${3:\n}}"
+    "description": "Whether to include six columns in the results matrix containing the mean element rates due to zonal terms of the spherical harmonic expansion of the Earth gravity field."
+
+  "Output mean element rates due to Sun gravity":
+    "prefix": "OUTPUT_DSST_MEAN_ELEMENT_RATES_SUN_GRAVITY"
+    "leftLabel": "bool"
+    "body": "OUTPUT_DSST_MEAN_ELEMENT_RATES_SUN_GRAVITY  ${1:NO}${2:  % NO | YES${3:\n}}"
+    "description": "Whether to include six columns in the results matrix containing the mean element rates due to the Sun's third-body central gravity."
+
+  "Output mean element rates due to Moon gravity":
+    "prefix": "OUTPUT_DSST_MEAN_ELEMENT_RATES_MOON_GRAVITY"
+    "leftLabel": "bool"
+    "body": "OUTPUT_DSST_MEAN_ELEMENT_RATES_MOON_GRAVITY  ${1:NO}${2:  % NO | YES${3:\n}}"
+    "description": "Whether to include six columns in the results matrix containing the mean element rates due to the Moon's third-body central gravity."
+
+  "Output mean element rates due to atmospheric drag":
+    "prefix": "OUTPUT_DSST_MEAN_ELEMENT_RATES_ATMOSPHERIC_DRAG"
+    "leftLabel": "bool"
+    "body": "OUTPUT_DSST_MEAN_ELEMENT_RATES_ATMOSPHERIC_DRAG  ${1:NO}${2:  % NO | YES${3:\n}}"
+    "description": "Whether to include six columns in the results matrix containing the mean element rates due to the Earth's atmospheric drag."
+
+  "Output mean element rates due to solar radiation pressure":
+    "prefix": "OUTPUT_DSST_MEAN_ELEMENT_RATES_SOLAR_RADIATION_PRESSURE"
+    "leftLabel": "bool"
+    "body": "OUTPUT_DSST_MEAN_ELEMENT_RATES_SOLAR_RADIATION_PRESSURE  ${1:NO}${2:  % NO | YES${3:\n}}"
+    "description": "Whether to include six columns in the results matrix containing the mean element rates due to solar radiation pressure."
+
+  "Output total short period terms":
+    "prefix": "OUTPUT_DSST_SHORT_PERIOD_TERMS"
+    "leftLabel": "bool"
+    "body": "OUTPUT_DSST_SHORT_PERIOD_TERMS  ${1:NO}${2:  % NO | YES${3:\n}}"
+    "description": "Whether to include six columns in the results matrix containing the short period terms due to all the included disturbing forces."
+
+  "Output short period terms due to zonal terms":
+    "prefix": "OUTPUT_DSST_SHORT_PERIOD_TERMS_ZONAL_TERMS"
+    "leftLabel": "bool"
+    "body": "OUTPUT_DSST_SHORT_PERIOD_TERMS_ZONAL_TERMS  ${1:NO}${2:  % NO | YES${3:\n}}"
+    "description": "Whether to include six columns in the results matrix containing the short period terms due to zonal terms of the spherical harmonic expansion of the Earth gravity field."
+
+  "Output short period terms due to Sun gravity":
+    "prefix": "OUTPUT_DSST_SHORT_PERIOD_TERMS_SUN_GRAVITY"
+    "leftLabel": "bool"
+    "body": "OUTPUT_DSST_SHORT_PERIOD_TERMS_SUN_GRAVITY  ${1:NO}${2:  % NO | YES${3:\n}}"
+    "description": "Whether to include six columns in the results matrix containing the short period terms due to the Sun's third-body central gravity."
+
+  "Output short period terms due to Moon gravity":
+    "prefix": "OUTPUT_DSST_SHORT_PERIOD_TERMS_MOON_GRAVITY"
+    "leftLabel": "bool"
+    "body": "OUTPUT_DSST_SHORT_PERIOD_TERMS_MOON_GRAVITY  ${1:NO}${2:  % NO | YES${3:\n}}"
+    "description": "Whether to include six columns in the results matrix containing the short period terms due to the Moon's third-body central gravity."
+
+  "Output short period terms due to atmospheric drag":
+    "prefix": "OUTPUT_DSST_SHORT_PERIOD_TERMS_ATMOSPHERIC_DRAG"
+    "leftLabel": "bool"
+    "body": "OUTPUT_DSST_SHORT_PERIOD_TERMS_ATMOSPHERIC_DRAG  ${1:NO}${2:  % NO | YES${3:\n}}"
+    "description": "Whether to include six columns in the results matrix containing the short period terms due to the Earth's atmospheric drag."
+
+  "Output short period terms due to solar radiation pressure":
+    "prefix": "OUTPUT_DSST_SHORT_PERIOD_TERMS_SOLAR_RADIATION_PRESSURE"
+    "leftLabel": "bool"
+    "body": "OUTPUT_DSST_SHORT_PERIOD_TERMS_SOLAR_RADIATION_PRESSURE  ${1:NO}${2:  % NO | YES${3:\n}}"
+    "description": "Whether to include six columns in the results matrix containing the short period terms due to solar radiation pressure."
+
+  "Output total computation times":
+    "prefix": "OUTPUT_DSST_COMPUTATION_TIMES"
+    "leftLabel": "bool"
+    "body": "OUTPUT_DSST_COMPUTATION_TIMES  ${1:NO}${2:  % NO | YES${3:\n}}"
+    "description": "Whether to include six columns in the results matrix containing the total computation times for all the included disturbing forces."
+
+  "Output computation times for zonal terms":
+    "prefix": "OUTPUT_DSST_COMPUTATION_TIMES_ZONAL_TERMS"
+    "leftLabel": "bool"
+    "body": "OUTPUT_DSST_COMPUTATION_TIMES_ZONAL_TERMS  ${1:NO}${2:  % NO | YES${3:\n}}"
+    "description": "Whether to include six columns in the results matrix containing the computation times for zonal terms of the spherical harmonic expansion of the Earth gravity field."
+
+  "Output computation times for Sun gravity":
+    "prefix": "OUTPUT_DSST_COMPUTATION_TIMES_SUN_GRAVITY"
+    "leftLabel": "bool"
+    "body": "OUTPUT_DSST_COMPUTATION_TIMES_SUN_GRAVITY  ${1:NO}${2:  % NO | YES${3:\n}}"
+    "description": "Whether to include six columns in the results matrix containing the computation times for the Sun's third-body central gravity."
+
+  "Output computation times for Moon gravity":
+    "prefix": "OUTPUT_DSST_COMPUTATION_TIMES_MOON_GRAVITY"
+    "leftLabel": "bool"
+    "body": "OUTPUT_DSST_COMPUTATION_TIMES_MOON_GRAVITY  ${1:NO}${2:  % NO | YES${3:\n}}"
+    "description": "Whether to include six columns in the results matrix containing the computation times for the Moon's third-body central gravity."
+
+  "Output computation times for atmospheric drag":
+    "prefix": "OUTPUT_DSST_COMPUTATION_TIMES_ATMOSPHERIC_DRAG"
+    "leftLabel": "bool"
+    "body": "OUTPUT_DSST_COMPUTATION_TIMES_ATMOSPHERIC_DRAG  ${1:NO}${2:  % NO | YES${3:\n}}"
+    "description": "Whether to include six columns in the results matrix containing the computation times for the Earth's atmospheric drag."
+
+  "Output computation times for solar radiation pressure":
+    "prefix": "OUTPUT_DSST_COMPUTATION_TIMES_SOLAR_RADIATION_PRESSURE"
+    "leftLabel": "bool"
+    "body": "OUTPUT_DSST_COMPUTATION_TIMES_SOLAR_RADIATION_PRESSURE  ${1:NO}${2:  % NO | YES${3:\n}}"
+    "description": "Whether to include six columns in the results matrix containing the computation times for solar radiation pressure."
 
   "Output frequency":
     "prefix": "OUTPUT_ONE_IN_EVERY_INTEGRATION_STEPS"
@@ -407,8 +594,9 @@
       THIRD_BODY_ATTRACTION_SUN  YES  % NO | YES
       THIRD_BODY_ATTRACTION_MOON  YES  % NO | YES
 
-      ATMOSPHERIC_MODEL  NRLMSISE00  % NRLMSISE00 | EXPONENTIAL
       ATMOSPHERIC_DRAG  YES  % NO | YES
+      ATMOSPHERIC_MODEL  NRLMSISE00  % NRLMSISE00 | EXPONENTIAL
+      SPACE_WEATHER_FILE_PATH  ''
 
       SOLAR_RADIATION_PRESSURE  YES  % NO | YES
       IGNORE_ECLIPSES  NO  % NO | YES
@@ -444,7 +632,7 @@
       PRELOAD_CELESTIAL_BODIES_DATA  YES  % NO | YES
 
       % The most restrective of these three will determine the actual duration of the propagation:
-      END_EPOCH  2015/12/31  % (-INF, INF) second since J2000, or formatted date 'YYYY-MM-DD hh:mm:ss'
+      END_EPOCH  '2015-12-31'  % (-INF, INF) second since J2000, or formatted date 'YYYY-MM-DD hh:mm:ss'
       PROPAGATION_PERIOD  10.0  % (0, INF) sidereal years
       REENTRY_ALTITUDE  0.0  % [0, INF) km
 
@@ -465,6 +653,7 @@
 
       OUTPUT_INPUT_SETTINGS  YES  % NO | YES
       OUTPUT_RESULTS_COLUMNS_DESCRIPTIONS  YES  % NO | YES
+      OUTPUT_PROPAGATION_TIME  YES  % NO | YES
       OUTPUT_COMPUTATION_TIME  YES  % NO | YES
       OUTPUT_PROPAGATION_TERMINATION_CAUSE  YES  % NO | YES
 
@@ -478,6 +667,30 @@
 
       PRINT_SUCCESS_MESSAGE_AFTER_PROPAGATION  YES  % NO | YES
       DELETE_INPUT_FILE_AFTER_PROPAGATION  NO  % NO | YES
+
+
+      % DSST PROPAGATOR SPECIFIC OUTPUT SETTINGS
+
+      OUTPUT_DSST_MEAN_ELEMENT_RATES  NO  % NO | YES
+      OUTPUT_DSST_MEAN_ELEMENT_RATES_ZONAL_TERMS  NO  % NO | YES
+      OUTPUT_DSST_MEAN_ELEMENT_RATES_SUN_GRAVITY  NO  % NO | YES
+      OUTPUT_DSST_MEAN_ELEMENT_RATES_MOON_GRAVITY  NO  % NO | YES
+      OUTPUT_DSST_MEAN_ELEMENT_RATES_ATMOSPHERIC_DRAG  NO  % NO | YES
+      OUTPUT_DSST_MEAN_ELEMENT_RATES_SOLAR_RADIATION_PRESSURE  NO  % NO | YES
+
+      OUTPUT_DSST_SHORT_PERIOD_TERMS  NO  % NO | YES
+      OUTPUT_DSST_SHORT_PERIOD_TERMS_ZONAL_TERMS  NO  % NO | YES
+      OUTPUT_DSST_SHORT_PERIOD_TERMS_SUN_GRAVITY  NO  % NO | YES
+      OUTPUT_DSST_SHORT_PERIOD_TERMS_MOON_GRAVITY  NO  % NO | YES
+      OUTPUT_DSST_SHORT_PERIOD_TERMS_ATMOSPHERIC_DRAG  NO  % NO | YES
+      OUTPUT_DSST_SHORT_PERIOD_TERMS_SOLAR_RADIATION_PRESSURE  NO  % NO | YES
+
+      OUTPUT_DSST_COMPUTATION_TIMES  NO  % NO | YES
+      OUTPUT_DSST_COMPUTATION_TIMES_ZONAL_TERMS  NO  % NO | YES
+      OUTPUT_DSST_COMPUTATION_TIMES_SUN_GRAVITY  NO  % NO | YES
+      OUTPUT_DSST_COMPUTATION_TIMES_MOON_GRAVITY  NO  % NO | YES
+      OUTPUT_DSST_COMPUTATION_TIMES_ATMOSPHERIC_DRAG  NO  % NO | YES
+      OUTPUT_DSST_COMPUTATION_TIMES_SOLAR_RADIATION_PRESSURE  NO  % NO | YES
 
 
       % PREVIOUS OUTPUT FILES
@@ -513,6 +726,11 @@
 
 # tespvar snippets
 ".source.tespvar":
+
+  "Attach statement":
+    "prefix": "attach"
+    "body": "#ATTACH ${1:VARIABLE1} ${2:VARIABLE2 VARIABLE3 ...}"
+    "description": "Specify that a set of variables (separated by spaces) must be used in a one-to-one basis to generate the input files. For instance, when this statement is not used, if VARIABLE1 has 5 values and VARIABLE2 has 3 values, a total of 5*3 = 15 cases are generated. However, when this statement is used for variables that have the same name of values, e.g. 4 values for VARIABLES1 and also 4 values for VARIABLES2, then these values are matched one-to-one and only 4 input files (intead of 4*4 = 16) are generated."
 
   "linspace":
     "prefix": "linspace"
@@ -713,8 +931,9 @@
       THIRD_BODY_ATTRACTION_SUN  YES  % NO | YES
       THIRD_BODY_ATTRACTION_MOON  YES  % NO | YES
 
-      ATMOSPHERIC_MODEL  NRLMSISE00  % NRLMSISE00 | EXPONENTIAL
       ATMOSPHERIC_DRAG  YES  % NO | YES
+      ATMOSPHERIC_MODEL  NRLMSISE00  % NRLMSISE00 | EXPONENTIAL
+      SPACE_WEATHER_FILE_PATH  ''
 
       SOLAR_RADIATION_PRESSURE  YES  % NO | YES
       IGNORE_ECLIPSES  NO  % NO | YES
@@ -750,7 +969,7 @@
       PRELOAD_CELESTIAL_BODIES_DATA  YES  % NO | YES
 
       % The most restrective of these three will determine the actual duration of the propagation:
-      END_EPOCH  2015/12/31  % (-INF, INF) second since J2000, or formatted date 'YYYY-MM-DD hh:mm:ss'
+      END_EPOCH  '2015-12-31'  % (-INF, INF) second since J2000, or formatted date 'YYYY-MM-DD hh:mm:ss'
       PROPAGATION_PERIOD  10.0  % (0, INF) sidereal years
       REENTRY_ALTITUDE  0.0  % [0, INF) km
 
@@ -771,6 +990,7 @@
 
       OUTPUT_INPUT_SETTINGS  YES  % NO | YES
       OUTPUT_RESULTS_COLUMNS_DESCRIPTIONS  YES  % NO | YES
+      OUTPUT_PROPAGATION_TIME  YES  % NO | YES
       OUTPUT_COMPUTATION_TIME  YES  % NO | YES
       OUTPUT_PROPAGATION_TERMINATION_CAUSE  YES  % NO | YES
 
@@ -784,6 +1004,30 @@
 
       PRINT_SUCCESS_MESSAGE_AFTER_PROPAGATION  YES  % NO | YES
       DELETE_INPUT_FILE_AFTER_PROPAGATION  NO  % NO | YES
+
+
+      % DSST PROPAGATOR SPECIFIC OUTPUT SETTINGS
+
+      OUTPUT_DSST_MEAN_ELEMENT_RATES  NO  % NO | YES
+      OUTPUT_DSST_MEAN_ELEMENT_RATES_ZONAL_TERMS  NO  % NO | YES
+      OUTPUT_DSST_MEAN_ELEMENT_RATES_SUN_GRAVITY  NO  % NO | YES
+      OUTPUT_DSST_MEAN_ELEMENT_RATES_MOON_GRAVITY  NO  % NO | YES
+      OUTPUT_DSST_MEAN_ELEMENT_RATES_ATMOSPHERIC_DRAG  NO  % NO | YES
+      OUTPUT_DSST_MEAN_ELEMENT_RATES_SOLAR_RADIATION_PRESSURE  NO  % NO | YES
+
+      OUTPUT_DSST_SHORT_PERIOD_TERMS  NO  % NO | YES
+      OUTPUT_DSST_SHORT_PERIOD_TERMS_ZONAL_TERMS  NO  % NO | YES
+      OUTPUT_DSST_SHORT_PERIOD_TERMS_SUN_GRAVITY  NO  % NO | YES
+      OUTPUT_DSST_SHORT_PERIOD_TERMS_MOON_GRAVITY  NO  % NO | YES
+      OUTPUT_DSST_SHORT_PERIOD_TERMS_ATMOSPHERIC_DRAG  NO  % NO | YES
+      OUTPUT_DSST_SHORT_PERIOD_TERMS_SOLAR_RADIATION_PRESSURE  NO  % NO | YES
+
+      OUTPUT_DSST_COMPUTATION_TIMES  NO  % NO | YES
+      OUTPUT_DSST_COMPUTATION_TIMES_ZONAL_TERMS  NO  % NO | YES
+      OUTPUT_DSST_COMPUTATION_TIMES_SUN_GRAVITY  NO  % NO | YES
+      OUTPUT_DSST_COMPUTATION_TIMES_MOON_GRAVITY  NO  % NO | YES
+      OUTPUT_DSST_COMPUTATION_TIMES_ATMOSPHERIC_DRAG  NO  % NO | YES
+      OUTPUT_DSST_COMPUTATION_TIMES_SOLAR_RADIATION_PRESSURE  NO  % NO | YES
 
 
       % PREVIOUS OUTPUT FILES
@@ -817,7 +1061,7 @@
     "description": "Prints a list of all the recognized parameters with the default values and the allowed (range of) values."
 
 # Null out the variable snippets so that they are not available when in sprintf()
-".source.tespvar .scope.sprintf":
+".source.tespvar .scope.sprintf, .source.tespvar .scope.attach":
   "Geopotential model":
     "prefix": "GEOPOTENTIAL_MODEL"
   "Degree of the geopotential":
@@ -828,10 +1072,12 @@
     "prefix": "THIRD_BODY_ATTRACTION_SUN"
   "Moon's gravity":
     "prefix": "THIRD_BODY_ATTRACTION_MOON"
-  "Atmospheric model":
-    "prefix": "ATMOSPHERIC_MODEL"
   "Atmospheric drag":
     "prefix": "ATMOSPHERIC_DRAG"
+  "Atmospheric model":
+    "prefix": "ATMOSPHERIC_MODEL"
+  "Space weather file":
+    "prefix": "SPACE_WEATHER_FILE_PATH"
   "Solar radiation pressure":
     "prefix": "SOLAR_RADIATION_PRESSURE"
   "Ignore Earth's shadow":
@@ -880,6 +1126,28 @@
     "prefix": "INTEGRATOR_INITIAL_STEPSIZE"
   "Error tolerance of the variable-stepsize integrator":
     "prefix": "INTEGRATOR_ERROR_TOLERANCE"
+  "Altitude limit for the consideration of drag by the DSST propagator":
+    "prefix": "DSST_ALTITUDE_LIMIT_ATMOSPHERIC_DRAG"
+  "Number of nodes for the Gaussian quadrature of atmospheric drag":
+    "prefix": "DSST_QUADRATURE_NODES_ATMOSPHERIC_DRAG"
+  "Scalability of the number of nodes for the Gaussian quadrature of atmospheric drag":
+    "prefix": "DSST_QUADRATURE_NODES_ATMOSPHERIC_DRAG_IS_SCALABLE"
+  "Number of nodes for the Gaussian quadrature of solar radiation pressure":
+    "prefix": "DSST_QUADRATURE_NODES_SOLAR_RADIATION_PRESSURE"
+  "Scalability of the number of nodes for the Gaussian quadrature of solar radiation pressure":
+    "prefix": "DSST_QUADRATURE_NODES_SOLAR_RADIATION_PRESSURE_IS_SCALABLE"
+  "Maximum value for the first index of the serie expansion for Sun gravity":
+    "prefix": "DSST_THIRD_BODY_ATTRACTION_SUN_S"
+  "Maximum value for the second index of the serie expansion for Sun gravity":
+    "prefix": "DSST_THIRD_BODY_ATTRACTION_SUN_N"
+  "Maximum value for the first index of the serie expansion for Moon gravity":
+    "prefix": "DSST_THIRD_BODY_ATTRACTION_MOON_S"
+  "Maximum value for the second index of the serie expansion for Moon gravity":
+    "prefix": "DSST_THIRD_BODY_ATTRACTION_MOON_N"
+  "Maximum value for the first index of the serie expansion for solar radiation pressure":
+    "prefix": "DSST_SOLAR_RADIATION_PRESSURE_S"
+  "Maximum value for the second index of the serie expansion for solar radiation pressure":
+    "prefix": "DSST_SOLAR_RADIATION_PRESSURE_N"
   "Output directory path":
     "prefix": "OUTPUT_DIRECTORY_PATH"
   "Output file's name":
@@ -890,6 +1158,8 @@
     "prefix": "OUTPUT_INPUT_SETTINGS"
   "Output description of the columns of the result matrix":
     "prefix": "OUTPUT_RESULTS_COLUMNS_DESCRIPTIONS"
+  "Output propagation time":
+    "prefix": "OUTPUT_PROPAGATION_TIME"
   "Output computation time":
     "prefix": "OUTPUT_COMPUTATION_TIME"
   "Output propagation termination cause":
@@ -902,6 +1172,42 @@
     "prefix": "OUTPUT_SUN_POSITION"
   "Output Moon position":
     "prefix": "OUTPUT_MOON_POSITION"
+  "Output total mean element rates":
+    "prefix": "OUTPUT_DSST_MEAN_ELEMENT_RATES"
+  "Output mean element rates due to zonal terms":
+    "prefix": "OUTPUT_DSST_MEAN_ELEMENT_RATES_ZONAL_TERMS"
+  "Output mean element rates due to Sun gravity":
+    "prefix": "OUTPUT_DSST_MEAN_ELEMENT_RATES_SUN_GRAVITY"
+  "Output mean element rates due to Moon gravity":
+    "prefix": "OUTPUT_DSST_MEAN_ELEMENT_RATES_MOON_GRAVITY"
+  "Output mean element rates due to atmospheric drag":
+    "prefix": "OUTPUT_DSST_MEAN_ELEMENT_RATES_ATMOSPHERIC_DRAG"
+  "Output mean element rates due to solar radiation pressure":
+    "prefix": "OUTPUT_DSST_MEAN_ELEMENT_RATES_SOLAR_RADIATION_PRESSURE"
+  "Output total short period terms":
+    "prefix": "OUTPUT_DSST_SHORT_PERIOD_TERMS"
+  "Output short period terms due to zonal terms":
+    "prefix": "OUTPUT_DSST_SHORT_PERIOD_TERMS_ZONAL_TERMS"
+  "Output short period terms due to Sun gravity":
+    "prefix": "OUTPUT_DSST_SHORT_PERIOD_TERMS_SUN_GRAVITY"
+  "Output short period terms due to Moon gravity":
+    "prefix": "OUTPUT_DSST_SHORT_PERIOD_TERMS_MOON_GRAVITY"
+  "Output short period terms due to atmospheric drag":
+    "prefix": "OUTPUT_DSST_SHORT_PERIOD_TERMS_ATMOSPHERIC_DRAG"
+  "Output short period terms due to solar radiation pressure":
+    "prefix": "OUTPUT_DSST_SHORT_PERIOD_TERMS_SOLAR_RADIATION_PRESSURE"
+  "Output total computation times":
+    "prefix": "OUTPUT_DSST_COMPUTATION_TIMES"
+  "Output computation times for zonal terms":
+    "prefix": "OUTPUT_DSST_COMPUTATION_TIMES_ZONAL_TERMS"
+  "Output computation times for Sun gravity":
+    "prefix": "OUTPUT_DSST_COMPUTATION_TIMES_SUN_GRAVITY"
+  "Output computation times for Moon gravity":
+    "prefix": "OUTPUT_DSST_COMPUTATION_TIMES_MOON_GRAVITY"
+  "Output computation times for atmospheric drag":
+    "prefix": "OUTPUT_DSST_COMPUTATION_TIMES_ATMOSPHERIC_DRAG"
+  "Output computation times for solar radiation pressure":
+    "prefix": "OUTPUT_DSST_COMPUTATION_TIMES_SOLAR_RADIATION_PRESSURE"
   "Output frequency":
     "prefix": "OUTPUT_ONE_IN_EVERY_INTEGRATION_STEPS"
   "Output only last integration step":

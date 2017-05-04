@@ -8,6 +8,9 @@ patterns: [
     include: '#matlab'
   }
   {
+    include: '#attach'
+  }
+  {
     include: 'source.tespin#variables_names'
   }
   {
@@ -75,6 +78,30 @@ repository:
       }
     ]
 
+  attach:
+    patterns: [
+      {
+        match: "^\\s*(\#ATTACH)\\b\\s+(.*)"
+        captures:
+          "1":
+            name: "keyword.other.tesp"
+          "2":
+            name: "scope.attach.tesp"
+            patterns: [
+              {
+                include: "source.tespin#variables_names"
+              }
+              {
+                include: "#variables_names"
+              }
+              {
+                include: "#user_defined_variables"
+              }
+            ]
+        name: "meta.attach.tesp"
+      }
+    ]
+
   colon_range:
     patterns: [
       {
@@ -109,7 +136,7 @@ repository:
   user_defined_variables:
     patterns: [
       {
-        match: "\\s*(\\$(?:[a-z]|[A-Z]|_)+?(?:[0-9]|[a-z]|[A-Z]|_)+?)\\b"
+        match: "\\s*(\\$(?:[a-z]|[A-Z]|_)+?(?:[0-9]|[a-z]|[A-Z]|_)*?)\\b"
         captures:
           "1":
             name: "class"

@@ -162,8 +162,8 @@
   "Maximum propagation period":
     "prefix": "PROPAGATION_PERIOD"
     "leftLabel": "double"
-    "body": "PROPAGATION_PERIOD  ${1:10.0}${2:  % (0, INF) sidereal years${3:\n}}"
-    "description": "The period, in sidereal years, after which the propagation will be stopped, if it has not finished yet. The most restrictive of END_EPOCH, PROPAGATION_PERIOD and REENTRY_ALTITUDE will determine the actual duration of the propagation."
+    "body": "PROPAGATION_PERIOD  ${1:3.1558e8}${2:  % (0, INF) seconds${3:\n}}"
+    "description": "The period, in seconds, after which the propagation will be stopped, if it has not finished yet. The most restrictive of END_EPOCH, PROPAGATION_PERIOD and REENTRY_ALTITUDE will determine the actual duration of the propagation."
 
   "Re-entry altitude":
     "prefix": "REENTRY_ALTITUDE"
@@ -633,7 +633,7 @@
 
       % The most restrective of these three will determine the actual duration of the propagation:
       END_EPOCH  '2015-12-31'  % (-INF, INF) second since J2000, or formatted date 'YYYY-MM-DD hh:mm:ss'
-      PROPAGATION_PERIOD  10.0  % (0, INF) sidereal years
+      PROPAGATION_PERIOD  3.1558e8  % (0, INF) seconds
       REENTRY_ALTITUDE  0.0  % [0, INF) km
 
       PROPAGATOR_NAME  COWELL  % COWELL | ENCKE
@@ -970,7 +970,7 @@
 
       % The most restrective of these three will determine the actual duration of the propagation:
       END_EPOCH  '2015-12-31'  % (-INF, INF) second since J2000, or formatted date 'YYYY-MM-DD hh:mm:ss'
-      PROPAGATION_PERIOD  10.0  % (0, INF) sidereal years
+      PROPAGATION_PERIOD  3.1558e8  % (0, INF) seconds
       REENTRY_ALTITUDE  0.0  % [0, INF) km
 
       PROPAGATOR_NAME  COWELL  % COWELL | ENCKE

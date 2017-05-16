@@ -727,6 +727,11 @@
 # tespvar snippets
 ".source.tespvar":
 
+  "Population statement":
+    "prefix": "population"
+    "body": "#POPULATION ${1:NUMBER_OF_INDIVIDUALS}"
+    "description": "Specify the size of the population when evaluating the parameters whose value has been defined using the function `normrnd`."
+
   "Attach statement":
     "prefix": "attach"
     "body": "#ATTACH ${1:VARIABLE1} ${2:VARIABLE2 VARIABLE3 ...}"
@@ -737,6 +742,12 @@
     "body": "linspace(${1:ini},${2:end},${3:N})"
     "description": "Generate linearly spaced vector."
     "descriptionMoreURL": "https://mathworks.com/help/matlab/ref/linspace.html"
+
+  "normrnd":
+    "prefix": "normrnd"
+    "body": "normrnd(${1:mean},${2:stddev})"
+    "description": "Define value of variable to be normally-distributed."
+    "descriptionMoreURL": "https://mathworks.com/help/stats/normrnd.html"
 
   "sprintf":
     "prefix": "sprintf"

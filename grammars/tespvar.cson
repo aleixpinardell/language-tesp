@@ -11,6 +11,9 @@ patterns: [
     include: '#attach'
   }
   {
+    include: '#population'
+  }
+  {
     include: 'source.tespin#variables_names'
   }
   {
@@ -39,6 +42,13 @@ repository:
           "1":
             name: "entity.name.function.linspace.tesp"
         name: "meta.linspace.tesp"
+      }
+      { # normrnd
+        match: "\\b(normrnd)\\b"
+        captures:
+          "1":
+            name: "entity.name.function.normrnd.tesp"
+        name: "meta.normrnd.tesp"
       }
       { # sprintf
         match: "\\b(sprintf)\\s*\\(\\s*('.*?')\\s*,(.*?\\))"
@@ -99,6 +109,24 @@ repository:
               }
             ]
         name: "meta.attach.tesp"
+      }
+    ]
+
+  population:
+    patterns: [
+      {
+        match: "^\\s*(\#POPULATION)\\b\\s+(.*)"
+        captures:
+          "1":
+            name: "keyword.other.tesp"
+          "2":
+            name: "scope.population.tesp"
+            patterns: [
+              {
+                include: "source.tespin#numbers"
+              }
+            ]
+        name: "meta.population.tesp"
       }
     ]
 

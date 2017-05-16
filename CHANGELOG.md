@@ -1,3 +1,6 @@
+### 0.6.0
+* Added support for defining the values of a parameter to be normally-distributed, through the use of `normrnd(mean,stddev)`. These parameters are not used as optimization variables; instead, their value is determine pseudo-randomly when the files for each optimization case are generated. The number of files to be generated per each optimization case is specified through the keyword `#POPULATION`. When the value of at least one variable is specified to be normally-distributed and the variable `INPUT_FILES_NAMING_PATTERN` is not specified, the input files are named from 1 to the number specified by `#POPULATION` with constant width, e.g. if the population is 100, then "001", "002", ... "100".
+
 ### 0.5.0
 * Added support for settings specific to the DSST propagator.
 * Added output options for the DSST propagator.
